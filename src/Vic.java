@@ -13,8 +13,7 @@
 
 import java.io.*;
 import java.util.*;
-import javax.sound.midi.*;// package for all midi classes
-
+import javax.sound.midi.*; // package for all midi classes
 
 
 public class Vic
@@ -22,13 +21,12 @@ public class Vic
   static long cur = 0;
   static Sequence s;
   static Track t;
-  
   public static void main(String argv[]) {
     System.out.println("midifile begin ");
     try
     {
 //****  Create a new MIDI sequence with 24 ticks per beat  ****
-      s = new Sequence(javax.sound.midi.Sequence.PPQ,24);
+      s = new Sequence(javax.sound.midi.Sequence.PPQ,4);
       
       
 //****  Obtain a MIDI track from the sequence  ****
@@ -43,7 +41,7 @@ public class Vic
       
 //****  set tempo (meta event)  ****
       MetaMessage mt = new MetaMessage();
-      byte[] bt = {0x02, (byte)0x00, 0x00};
+      byte[] bt = {0x07, (byte)0xA1, 0x20};
       mt.setMessage(0x51 ,bt, 3);
       me = new MidiEvent(mt,(long)0);
       t.add(me);
@@ -117,23 +115,22 @@ public class Vic
       me = new MidiEvent(mt, (long)420);
       t.add(me);*/
       
-      
 //**** PLAYNOTE TESTING ****///
-      playNote(0x30, 96);// C 3
-      playNote(0x32, 48);// D 3
-      playNote(0x34, 48);// E 3
-      playNote(0x35, 48);// F 3
-      playNote(0x37, 48);// G 3
-      playNote(0x39, 48);// A 4
-      playNote(0x3B, 48);// B 4
-      playNote(0x3C, 96);// C 4
-      playNote(0x3B, 48);// B 4
-      playNote(0x39, 48);// A 4
-      playNote(0x37, 48);// G 3
-      playNote(0x35, 48);// F 3
-      playNote(0x34, 48);// E 3
-      playNote(0x32, 48);// D 3
-      playNote(0x30, 96);// C 3
+      playNote(Note.c3, 8);// C 3
+      playNote(Note.d3, 4);// D 3
+      playNote(Note.e3, 4);// E 3
+      playNote(0x35, 4);// F 3
+      playNote(0x37, 4);// G 3
+      playNote(0x39, 4);// A 4
+      playNote(0x3B, 4);// B 4
+      playNote(0x3C, 8);// C 4
+      playNote(0x3B, 4);// B 4
+      playNote(0x39, 4);// A 4
+      playNote(0x37, 4);// G 3
+      playNote(0x35, 4);// F 3
+      playNote(0x34, 4);// E 3
+      playNote(0x32, 4);// D 3
+      playNote(0x30, 8);// C 3
       
 //****  write the MIDI sequence to a MIDI file  ****
       File f = new File("midifile.mid");
