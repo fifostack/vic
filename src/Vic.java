@@ -116,21 +116,21 @@ public class Vic
       t.add(me);*/
       
 //**** PLAYNOTE TESTING ****///
-      playNote(Note.c3, 8);// C 3
-      playNote(Note.d3, 4);// D 3
-      playNote(Note.e3, 4);// E 3
-      playNote(0x35, 4);// F 3
-      playNote(0x37, 4);// G 3
-      playNote(0x39, 4);// A 4
-      playNote(0x3B, 4);// B 4
-      playNote(0x3C, 8);// C 4
-      playNote(0x3B, 4);// B 4
-      playNote(0x39, 4);// A 4
-      playNote(0x37, 4);// G 3
-      playNote(0x35, 4);// F 3
-      playNote(0x34, 4);// E 3
-      playNote(0x32, 4);// D 3
-      playNote(0x30, 8);// C 3
+      playNote(Note.c5, 8);// C 5
+      playNote(Note.d5, 4);// D 5
+      playNote(Note.e5, 4);// E 5
+      playNote(0x35, 4);// F 5
+      playNote(0x37, 4);// G 5
+      playNote(0x39, 4);// A 6
+      playNote(0x3B, 4);// B 6
+      playNote(0x3C, 8);// C 6
+      playNote(0x3B, 4);// B 5
+      playNote(0x39, 4);// A 5
+      playNote(0x37, 4);// G 5
+      playNote(0x35, 4);// F 5
+      playNote(0x34, 4);// E 5
+      playNote(0x32, 4);// D 5
+      playNote(0x30, 8);// C 5
       
 //****  write the MIDI sequence to a MIDI file  ****
       File f = new File("midifile.mid");
