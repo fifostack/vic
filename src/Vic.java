@@ -71,66 +71,34 @@ public class Vic
       me = new MidiEvent(mm,(long)0);
       t.add(me);
       
-/*//****  note on - middle C  ****
-      mm = new ShortMessage();
-      mm.setMessage(ShortMessage.NOTE_ON,0x3C,0x60);
-      me = new MidiEvent(mm,(long)1);
-      t.add(me);
+//**** PLAYNOTE TESTING ****///
+      playNote(Note.c3, 8);// C 5
+      playNote(Note.c3, 4);// D 5
+      playNote(Note.c3, 4);// E 5
+      playNote(Note.c4, 4);// F 5
+      playNote(Note.g5, 4);// G 5
+      playNote(Note.a5, 4);// A 5
+      playNote(Note.b5, 4);// B 5
+      playNote(Note.c6, 8);// C 6
+      playNote(Note.b5, 4);// B 5
+      playNote(Note.a5, 4);// A 5
+      playNote(Note.g5, 4);// G 5
+      playNote(Note.f5, 4);// F 5
+      playNote(Note.e5, 4);// E 5
+      playNote(Note.d5, 4);// D 5
+      playNote(Note.c5, 8);// C 5
       
-//****  note off - middle C - 120 ticks later  ****
-      mm = new ShortMessage();
-      mm.setMessage(ShortMessage.NOTE_OFF,0x3C,0x40);
-      me = new MidiEvent(mm,(long)121);
-      t.add(me);
+      rest(1);
       
-//****  note on - E3  ****
-      mm = new ShortMessage();
-      mm.setMessage(ShortMessage.NOTE_ON,0x3E,0x60);
-      me = new MidiEvent(mm,(long)141);
-      t.add(me);
+      writeMelody(64);
       
-//****  note off - E3 - 120 ticks later  ****
-      mm = new ShortMessage();
-      mm.setMessage(ShortMessage.NOTE_OFF,0x3E,0x40);
-      me = new MidiEvent(mm,(long)261);
-      t.add(me);
-      
-      
-//****  note on - middle C - 20 ticks later ****
-      mm = new ShortMessage();
-      mm.setMessage(ShortMessage.NOTE_ON,0x3C,0x60);
-      me = new MidiEvent(mm,(long)281);
-      t.add(me);
-      
-//****  note off - middle C - 120 ticks later  ****
-      mm = new ShortMessage();
-      mm.setMessage(ShortMessage.NOTE_OFF,0x3C,0x40);
-      me = new MidiEvent(mm,(long)401);
-      t.add(me);
-      
-//****  set end of track (meta event) 19 ticks later  ****
+//****  set end of track (meta event) 4 ticks later  ****
       mt = new MetaMessage();
       byte[] bet = {}; // empty array
       mt.setMessage(0x2F,bet,0);
-      me = new MidiEvent(mt, (long)420);
-      t.add(me);*/
-      
-//**** PLAYNOTE TESTING ****///
-      playNote(Note.c5, 8);// C 5
-      playNote(Note.d5, 4);// D 5
-      playNote(Note.e5, 4);// E 5
-      playNote(0x35, 4);// F 5
-      playNote(0x37, 4);// G 5
-      playNote(0x39, 4);// A 6
-      playNote(0x3B, 4);// B 6
-      playNote(0x3C, 8);// C 6
-      playNote(0x3B, 4);// B 5
-      playNote(0x39, 4);// A 5
-      playNote(0x37, 4);// G 5
-      playNote(0x35, 4);// F 5
-      playNote(0x34, 4);// E 5
-      playNote(0x32, 4);// D 5
-      playNote(0x30, 8);// C 5
+      me = new MidiEvent(mt, (long)cur + 4);//add a 4 tick break before ending
+      cur += 4; //increment cur
+      t.add(me);
       
 //****  write the MIDI sequence to a MIDI file  ****
       File f = new File("midifile.mid");
@@ -143,7 +111,18 @@ public class Vic
     System.out.println("midifile end ");
   } //main
   
-  
+  public static void writeMelody(int ticks)
+  {
+    int rNote = 0, rDur = 0, curTotal = 0;
+    while(curTotal < ticks)
+    {
+      rNote = (int)(Math.random()*120);
+      rDur = (int)((Math.random()*15)+1);
+      rDur = 4;
+      curTotal+= rDur;
+      playNote(rNote, rDur);
+    }
+  }
   
   public static void playNote(int note, int duration)
   {
@@ -167,6 +146,11 @@ public class Vic
       System.out.println("Exception caught: " + e.toString());//print any issue
     }//catch
   } //playnote
+  
+  public static void rest(int duration)
+  {
+    cur += duration;
+  }
   
   
 } //class
