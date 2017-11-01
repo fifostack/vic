@@ -15,7 +15,7 @@ public class Note
     c10= (0x6C),cS10= (0x6D),d10= (0x6E),eF10= (0x6F),e10= (0x70),f10= (0x71),fS10= (0x72),g10= (0x73),gS10= (0x74),a10= (0x75),bF10= (0x76),
     b10= (0x77);
   
-  int[] Notes = {c3,cS3,d3,eF3,e3,f3,fS3,g3,gS3,a3,bF3,b3,
+  static int[] Notes = {c3,cS3,d3,eF3,e3,f3,fS3,g3,gS3,a3,bF3,b3,
                  c4,cS4,d4,eF4,e4,f4,fS4,g4,gS4,a4,bF4,b4,
                  c5,cS5,d5,eF5,e5,f5,fS5,g5,gS5,a5,bF5,b5,
                  c6,cS6,d6,eF6,e6,f6,fS6,g6,gS6,a6,bF6,b6,

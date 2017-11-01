@@ -21,6 +21,7 @@ public class Vic
   static long cur = 0;
   static Sequence s;
   static Track t;
+  static NoteObj[] melody;
   public static void main(String argv[]) {
     System.out.println("midifile begin ");
     try
@@ -67,15 +68,15 @@ public class Vic
       
 //****  set instrument to Piano  ****
       mm = new ShortMessage();
-      mm.setMessage(0xC0, 0x00, 0x00);
+      mm.setMessage(0xC0, 0x32, 0x00);
       me = new MidiEvent(mm,(long)0);
       t.add(me);
       
 //**** PLAYNOTE TESTING ****///
-      playNote(Note.c3, 8);// C 5
-      playNote(Note.c3, 4);// D 5
-      playNote(Note.c3, 4);// E 5
-      playNote(Note.c4, 4);// F 5
+      playNote(Note.c5, 8);// C 5
+      playNote(Note.d5, 4);// D 5
+      playNote(Note.e5, 4);// E 5
+      playNote(Note.f5, 4);// F 5
       playNote(Note.g5, 4);// G 5
       playNote(Note.a5, 4);// A 5
       playNote(Note.b5, 4);// B 5
@@ -91,6 +92,7 @@ public class Vic
       rest(1);
       
       writeMelody(64);
+      
       
 //****  set end of track (meta event) 4 ticks later  ****
       mt = new MetaMessage();
@@ -109,18 +111,35 @@ public class Vic
       System.out.println("Exception caught " + e.toString());
     } //catch
     System.out.println("midifile end ");
+    
+    printMelody(melody);
   } //main
   
   public static void writeMelody(int ticks)
   {
     int rNote = 0, rDur = 0, curTotal = 0;
+    melody = new NoteObj[ticks];
     while(curTotal < ticks)
     {
-      rNote = (int)(Math.random()*120);
-      rDur = (int)((Math.random()*15)+1);
-      rDur = 4;
+      rNote = (int)(Math.random()*96);
+      //rDur = (int)((Math.random()*15)+1);
+      rDur = 1;
+      melody[curTotal] = new NoteObj(Note.Notes[rNote], rDur);
+      
+      
       curTotal+= rDur;
-      playNote(rNote, rDur);
+      playNote(Note.Notes[rNote], rDur);
+    }
+  }
+  
+  static void printMelody(NoteObj[] n)
+  {
+    for(int i = 0; i < n.length; i++)
+    {
+      if(n[i] != null)
+      {
+        System.out.print(n[i].toString() + " ");
+      }
     }
   }
   
