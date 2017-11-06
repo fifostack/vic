@@ -41,4 +41,26 @@ public class NoteObj
   {
     return "(" + note + ", " + length + ")"; 
   }
+  
+  public int distance(NoteObj a, NoteObj b) //get distance between two notes
+  {
+	int aInd = -1, bInd = -1; 
+	int d = 0;
+	for(int i = 0; i < Note.Notes.length; i++)
+	{
+		if(Note.Notes[i] == a.note) // if we find the correct note, store the index
+		{
+			aInd = i;
+		}
+		if(Note.Notes[i] == b.note)
+		{
+			bInd = i;
+		}
+		
+		d = bInd - aInd;
+	}
+	
+	if(aInd == -1 || bInd == -1) {return -999;} //if returns -999, the notes are invalid
+	return d;
+  }
 }
