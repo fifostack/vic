@@ -24,5 +24,19 @@ public class Note
                  c9,cS9,d9,eF9,e9,f9,fS9,g9,gS9,a9,bF9,b9,
                  c10,cS10,d10,eF10,e10,f10,fS10,g10,gS10,a10,bF10,b10};
   
+  static int[][] KEYS = new int[12][12];
+  /*C MAJOR*/KEYS[0] = {c3,d3,e3,f3,g3,a3,b3,c4,d4,e4,f4,g4,a4,b4,c5,d5,e5,f5,g5,a5,b5,c6,d6,e6,f6,g6,a6,b6,c7,d7,e7,f7,g7,a7,b7,c8,d8,e8,f8,g8,a8,b8,c9,d9,e9,f9,g9,a9,b9,c10,d10,e10,f10,g10,a10,b10};
+  /*G MAJOR*/KEYS[1] = {c3,d3,e3,fS3,g3,a3,b3,c4,d4,e4,fS4,g4,a4,b4,c5,d5,e5,fS5,g5,a5,b5,c6,d6,e6,fS6,g6,a6,b6,c7,d7,e7,fS7,g7,a7,b7,c8,d8,e8,fS8,g8,a8,b8,c9,d9,e9,fS9,g9,a9,b9,c10,d10,e10,fS10,g10,a10,b10};
+  /*D MAJOR*/KEYS[2] = {cS3,d3,e3,fS3,g3,a3,b3,cS4,d4,e34,fS4,g4,a4,b4,cS5,d5,e5,fS5,g5,a5,b5,cS6,d6,e6,fS6,g6,a6,b6,cS7,d7,e7,fS7,g7,a7,b7,cS8,d8,e8,fS8,g8,a8,b8,cS9,d9,e9,fS9,g9,a9,b9,cS10,d10,e10,fS10,g10,a10,b10};
+  /*A MAJOR*/KEYS[3] = {cS3,d,e3,fS3,gS3,a3,b3,cS4,d4,e4,fS4,gS4,a34,b4,cS5,d5,e5,fS5,gS5,a5,b5,cS6,d6,e6,fS6,gS6,a6,b6,cS7,d7,e7,fS7,gS7,a7,b7,cS8,d8,e8,fS8,gS8,a8,b8,cS9,d9,e9,fS9,gS9,a9,b9,cS10,d10,e10,fS10,gS10,a10,b10};
+  /*E MAJOR*/KEYS[4] = {cS3,dS3,e3,fS3,gS3,a3,b3,cS4,dS4,e4,fS4,gS4,a4,b4,cS5,dS5,e5,fS5,gS5,a5,b5,cS6,dS6,e6,fS6,gS6,a6,b6,cS7,dS7,e7,fS7,gS7,a7,b7,cS8,dS8,e8,fS8,gS8,a8,b8,cS9,dS9,e9,fS9,gS9,a9,b9,cS10,dS10,e10,fS10,gS10,a10,b10};
+  /*B MAJOR*/KEYS[5] = {cS3,dS3,e3,fS3,gS3,aS3,b3,cS4,dS4,e4,fS4,gS4,aS4,b4,cS5,dS5,e5,fS5,gS5,aS5,b5,cS6,dS6,e6,fS6,gS6,aS6,b6,cS7,dS7,e7,fS7,gS7,aS7,b7,cS8,dS8,e8,fS8,gS8,aS8,b8,cS9,dS9,e9,fS9,gS9,aS9,b9,cS9,dS9,e9,fS9,gS9,aS9,b9,cS10,dS10,e10,fS10,gS10,aS10,b10};
+  /*Fsharp MAJOR*/KEYS[6] = {fS3,gS3,c3,cS3,eF3,f3,fS4};
+  /*Csharp MAJOR*/KEYS[7] = {c30};
+  /*Aflat MAJOR*/KEYS[8] = {c30};
+  /*Eflat MAJOR*/KEYS[9] = {c30};
+  /*Bflat MAJOR*/KEYS[10] = {c30};
+  /*F MAJOR*/KEYS[11] = {c30};
+  
  
 }
