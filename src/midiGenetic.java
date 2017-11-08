@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class midiGenetic {
 	
 	LinkedList<NoteObj> melody;
-	int octave = 12;
+	int octave = 18;
 	
 	public midiGenetic(LinkedList<NoteObj> m)
 	{
@@ -22,22 +22,27 @@ public class midiGenetic {
 		LinkedList<NoteObj> n = new LinkedList<NoteObj>(); //create a new melody
 		n.add(melody.get(0));
 		
-		for(int i = 1; i < n.size(); i++) //for every note but the first note
+		for(int i = 1; i < melody.size(); i++) //for every note but the first note
 		{
+			int dis = NoteObj.distance(melody.get(i), n.get(i-1)); //distance between the notes
 			
-			if((Math.abs(NoteObj.distance(melody.get(i), n.get(i-1))) > octave)) //if the notes are more than an octave away
+			if((Math.abs(dis)) > octave) //if the notes are more than an octave away
 			{ 
 				NoteObj temp = melody.get(i);
-				if(NoteObj.distance(melody.get(i), melody.get(i-1)) > 0) //if its too high
+				if(dis > 0) //if its too high, pull it down an octave
 				{
 					temp = new NoteObj((melody.get(i).getNote()) - 18,melody.get(i).getLength());
 					n.add(temp);
-					//n[i].setNote(n[i].getNote() - 18);
 				}
-				else if(NoteObj.distance(melody.get(i), melody.get(i-1)) < 0) //if its too low
+				else if(dis < 0) //if its too low, push it up an octave
+				{
 					temp = new NoteObj((melody.get(i).getNote()) + 18,melody.get(i).getLength());
 					n.add(temp);
-					//n[i].setNote(n[i].getNote() + 18);
+				}
+				else
+				{
+					System.out.println();
+				}
 			}
 			else
 			{
