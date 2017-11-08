@@ -42,7 +42,7 @@ public class NoteObj
     return "(" + note + ", " + length + ")"; 
   }
   
-  public int distance(NoteObj a, NoteObj b) //get distance between two notes
+  public static int distance(NoteObj a, NoteObj b) //get distance between two notes
   {
 	int aInd = -1, bInd = -1; 
 	int d = 0;
@@ -57,7 +57,7 @@ public class NoteObj
 			bInd = i;
 		}
 		
-		d = bInd - aInd;
+		d = aInd - bInd;
 	}
 	
 	if(aInd == -1 || bInd == -1) {return -999;} //if returns -999, the notes are invalid

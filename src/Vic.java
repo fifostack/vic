@@ -2,7 +2,7 @@
 
 /**
  * Vic.java
- * @author Lucas Darnell
+ * @author Lucas Darnell, Jared Miller
  * 
  * A program to build midi files, using a genetic algorithm
  * to refine music bars
@@ -21,60 +21,16 @@ public class Vic
   static long cur = 0;
   static Sequence s;
   static Track t;
-  static NoteObj[] melody;
+  static LinkedList<NoteObj> melody1, melody2, melody3;
+  static midiGenetic test;
   
   
   public static void main(String argv[]) {
+	  
+	  
     System.out.println("midifile begin ");
     
-    //init();
-    try
-    {
-//****  Create a new MIDI sequence with 4 ticks per beat  ****
-      s = new Sequence(javax.sound.midi.Sequence.PPQ,4);
-      
-      
-//****  Obtain a MIDI track from the sequence  ****
-      t = s.createTrack();
-      
-//****  General MIDI sysex -- turn on General MIDI sound set  ****
-      byte[] b = {(byte)0xF0, 0x7E, 0x7F, 0x09, 0x01, (byte)0xF7};
-      SysexMessage sm = new SysexMessage();
-      sm.setMessage(b, 6);
-      MidiEvent me = new MidiEvent(sm,(long)0);
-      t.add(me);
-      
-//****  set tempo (meta event)  ****
-      MetaMessage mt = new MetaMessage();
-      byte[] bt = {0x07, (byte)0xA1, 0x20};
-      mt.setMessage(0x51 ,bt, 3);
-      me = new MidiEvent(mt,(long)0);
-      t.add(me);
-      
-//****  set track name (meta event)  ****
-      mt = new MetaMessage();
-      String TrackName = "midifile track";
-      mt.setMessage(0x03 ,TrackName.getBytes(), TrackName.length());
-      me = new MidiEvent(mt,(long)0);
-      t.add(me);
-      
-//****  set omni on  ****
-      ShortMessage mm = new ShortMessage();
-      mm.setMessage(0xB0, 0x7D,0x00);
-      me = new MidiEvent(mm,(long)0);
-      t.add(me);
-      
-//****  set poly on  ****
-      mm = new ShortMessage();
-      mm.setMessage(0xB0, 0x7F,0x00);
-      me = new MidiEvent(mm,(long)0);
-      t.add(me);
-      
-//****  set instrument to Piano  ****
-      mm = new ShortMessage();
-      mm.setMessage(0xC0, 0x00, 0x00);
-      me = new MidiEvent(mm,(long)0);
-      t.add(me); 
+    init();
       
 //**** PLAYNOTE TESTING ****///
       playNote(Note.c5, 8);// C 5
@@ -93,35 +49,37 @@ public class Vic
       playNote(Note.d5, 4);// D 5
       playNote(Note.c5, 8);// C 5
       
-      rest(1);
+      rest(1); //16th note rest
       
-      firstMelody(64);
+      firstMelody(16); //generate the initial random melody
       
-     
-//****  set end of track (meta event) 4 ticks later  ****
-      mt = new MetaMessage();
-      byte[] bet = {}; // empty array
-      mt.setMessage(0x2F,bet,0);
-      me = new MidiEvent(mt, (long)cur + 4);//add a 4 tick break before ending
-      cur += 4; //increment cur
-      t.add(me);
+      test = new midiGenetic(melody1);
+      printMelody(melody1);
+      melody2 = test.refactor(); //create a refactored melody
+      test.setMelody(melody2);
+      printMelody(melody2);
       
-//****  write the MIDI sequence to a MIDI file  ****
-      File f = new File("gen1.mid");
-      MidiSystem.write(s,1,f);
-    } //try
-    catch(Exception e)
-    {
-      System.out.println("Exception caught " + e.toString());
-    } //catch
-    System.out.println("midifile end ");
+      
+      
+      playMelody(melody1);
+      rest(4);
+      playMelody(melody2);
+      /*rest(4);
+      playMelody(melody3);*/
+   
+	  endTrack();
+	  writeFile("gen1.mid");
+
     
-    
-    printMelody(melody);
+    //System.out.println(melody.length);
+    //System.out.println(melody2.length);
+    //System.out.println(NoteObj.distance(melody[0],melody[1]));
   } //main
   
-  
-  public static void init() //unused for now
+ /*------------------------ Init ----------------------------------
+  * sends initial MIDI settings
+  */
+  public static void init() 
   {
 	  try
     {
@@ -167,7 +125,7 @@ public class Vic
       
 //****  set instrument to Piano  ****
       mm = new ShortMessage();
-      mm.setMessage(0xC0, 0x32, 0x00);
+      mm.setMessage(0xC0, 0x00, 0x00);
       me = new MidiEvent(mm,(long)0);
       t.add(me);
   }
@@ -177,7 +135,10 @@ public class Vic
   }
 }
 
-  public static void end() //unused for now
+ /*------------------------ endTrack ----------------------------------
+  * sends the track end message
+  */
+  public static void endTrack() 
   {
 	try{
 	  //****  set end of track (meta event) 4 ticks later  ****
@@ -188,17 +149,25 @@ public class Vic
       cur += 4; //increment cur
       t.add(me);
       
-//****  write the MIDI sequence to a MIDI file  ****
-      File f = new File("gen1.mid");
-      MidiSystem.write(s,1,f);
     } //try
     catch(Exception e)
     {
       System.out.println("Exception caught " + e.toString());
     } //catch
     System.out.println("midifile end ");
-    
-    printMelody(melody);
+  }
+  
+ /*------------------------ writeFile ----------------------------------
+  * outputs the finished MIDI file to the disk
+  */
+  public static void writeFile(String f)
+  {
+	  try{
+	  File outfile = new File("" + f);
+	  MidiSystem.write(s,1,outfile);
+      }
+      catch(Exception e)
+      { System.out.println("Exception caught in writeFile: " + e.toString()); }
   }
 
   
@@ -207,32 +176,55 @@ public class Vic
   public static void firstMelody(int ticks)
   {
     int rNote = 0, rDur = 0, curTotal = 0;
-    melody = new NoteObj[ticks];
     while(curTotal < ticks)
     {
       rNote = (int)(Math.random()*96);
       //rDur = (int)((Math.random()*15)+1);
-      rDur = 1;   //set the length of the note in ticks (16 - whole note)
+      rDur = 4;   //set the length of the note in ticks (16 - whole note)
       
       NoteObj n = new NoteObj(Note.Notes[rNote], rDur); //make a note from generated values
-      melody[curTotal] = n;                             //add it to the melody
-      playNote(n);                                      //play it
+      melody1.add(n);                             //add it to the melody
       curTotal+= rDur;                                  //add to total ticks
       
     }
   }
   
- /*-------------------------- printMelody ------------------------------
+  /*---------------------- playMelody ----------------------------------
   */
-  static void printMelody(NoteObj[] n) //display each note in the object array 
+  public static void playMelody(NoteObj[] m)
   {
-    for(int i = 0; i < n.length; i++)
+    for(int i = 0; i < m.length; i++)
     {
-      if(n[i] != null) //if there is a note, print it
-      {
-        System.out.print(n[i].toString() + " ");
-      }
+		if(m[i] != null)
+			playNote(m[i]);
+	}
+    
+  }
+  
+  /*---------------------- playMelody ----------------------------------
+  */
+  public static void playMelody(LinkedList<NoteObj> notes)
+  {
+    while(notes.size() > 0)
+    {
+		playNote(notes.removeFirst());
+	}
+    
+  }
+  
+  
+  /*-------------------------- printMelody ------------------------------
+  */
+  static void printMelody(LinkedList<NoteObj> notes) //display each note in the object array 
+  {
+	System.out.print(" Melody Start (List):  ");
+    
+    for(int i = 0; i < notes.size(); i++)
+    {
+      System.out.println(notes.get(i).toString());
     }
+    
+    System.out.println(" Melody End");
   }
   
  /*-------------------------- playNote ---------------------------------
