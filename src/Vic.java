@@ -21,59 +21,67 @@ public class Vic
   static long cur = 0;
   static Sequence s;
   static Track t;
-  static LinkedList<NoteObj> melody1, melody2, melody3;
+  static LinkedList<NoteObj> melody1, melody2, melody3, melody4;
   static midiGenetic test;
   
   
   public static void main(String argv[]) {
-	  
+	melody1 = new LinkedList<NoteObj>();  
 	  
     System.out.println("midifile begin ");
     
     init();
       
-//**** PLAYNOTE TESTING ****///
-      playNote(Note.c5, 8);// C 5
-      playNote(Note.d5, 4);// D 5
-      playNote(Note.e5, 4);// E 5
-      playNote(Note.f5, 4);// F 5
-      playNote(Note.g5, 4);// G 5
-      playNote(Note.a5, 4);// A 5
-      playNote(Note.b5, 4);// B 5
-      playNote(Note.c6, 8);// C 6
-      playNote(Note.b5, 4);// B 5
-      playNote(Note.a5, 4);// A 5
-      playNote(Note.g5, 4);// G 5
-      playNote(Note.f5, 4);// F 5
-      playNote(Note.e5, 4);// E 5
-      playNote(Note.d5, 4);// D 5
-      playNote(Note.c5, 8);// C 5
+//------------- PLAYNOTE TESTING ------------------------//
+
+      playNote(Note.c5, 4);// C 5
+      playNote(Note.d5, 2);// D 5
+      playNote(Note.e5, 2);// E 5
+      playNote(Note.f5, 2);// F 5
+      playNote(Note.g5, 2);// G 5
+      playNote(Note.a5, 2);// A 5
+      playNote(Note.b5, 2);// B 5
+      playNote(Note.c6, 4);// C 6
+      playNote(Note.b5, 2);// B 5
+      playNote(Note.a5, 2);// A 5
+      playNote(Note.g5, 2);// G 5
+      playNote(Note.f5, 2);// F 5
+      playNote(Note.e5, 2);// E 5
+      playNote(Note.d5, 2);// D 5
+      playNote(Note.c5, 4);// C 5
+      rest(4); //16th note rest
       
-      rest(1); //16th note rest
+//-------------------------------------------------------//
       
       firstMelody(16); //generate the initial random melody
       
       test = new midiGenetic(melody1);
+      
       printMelody(melody1);
+      
       melody2 = test.refactor(); //create a refactored melody
       test.setMelody(melody2);
       printMelody(melody2);
       
+      melody3 = test.refactor();
+      test.setMelody(melody3);
+      printMelody(melody3);
+      
+      melody4 = test.refactor();
+      printMelody(melody4);
       
       
       playMelody(melody1);
       rest(4);
       playMelody(melody2);
-      /*rest(4);
-      playMelody(melody3);*/
+      rest(4);
+      playMelody(melody3);
+      rest(4);
+      playMelody(melody4);
    
 	  endTrack();
 	  writeFile("gen1.mid");
 
-    
-    //System.out.println(melody.length);
-    //System.out.println(melody2.length);
-    //System.out.println(NoteObj.distance(melody[0],melody[1]));
   } //main
   
  /*------------------------ Init ----------------------------------
@@ -169,7 +177,6 @@ public class Vic
       catch(Exception e)
       { System.out.println("Exception caught in writeFile: " + e.toString()); }
   }
-
   
  /*---------------------- firstMelody ----------------------------------
   */
@@ -212,16 +219,15 @@ public class Vic
     
   }
   
-  
   /*-------------------------- printMelody ------------------------------
   */
   static void printMelody(LinkedList<NoteObj> notes) //display each note in the object array 
   {
-	System.out.print(" Melody Start (List):  ");
+	System.out.print(" Melody Start:  ");
     
     for(int i = 0; i < notes.size(); i++)
     {
-      System.out.println(notes.get(i).toString());
+      System.out.print(notes.get(i).toString());
     }
     
     System.out.println(" Melody End");
