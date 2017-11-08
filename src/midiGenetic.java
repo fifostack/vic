@@ -19,25 +19,32 @@ public class midiGenetic {
 	
 	public LinkedList<NoteObj> refactor() //primitive melody altering method
 	{
-		LinkedList<NoteObj> n = melody; //create a new melody
+		LinkedList<NoteObj> n = new LinkedList<NoteObj>(); //create a new melody
 		n.add(melody.get(0));
 		
 		for(int i = 1; i < n.size(); i++) //for every note but the first note
 		{
-			n[i] = melody[i];
 			
-			if((Math.abs(NoteObj.distance(melody.get(i), melody.get(i-1))) > octave)) //if the notes are more than an octave away
+			if((Math.abs(NoteObj.distance(melody.get(i), n.get(i-1))) > octave)) //if the notes are more than an octave away
 			{ 
-				//n[i] = melody[i];
-				
+				NoteObj temp = melody.get(i);
 				if(NoteObj.distance(melody.get(i), melody.get(i-1)) > 0) //if its too high
-					n[i].setNote(n[i].getNote() - 18);
+				{
+					temp = new NoteObj((melody.get(i).getNote()) - 18,melody.get(i).getLength());
+					n.add(temp);
+					//n[i].setNote(n[i].getNote() - 18);
+				}
 				else if(NoteObj.distance(melody.get(i), melody.get(i-1)) < 0) //if its too low
-					n[i].setNote(n[i].getNote() + 18);
+					temp = new NoteObj((melody.get(i).getNote()) + 18,melody.get(i).getLength());
+					n.add(temp);
+					//n[i].setNote(n[i].getNote() + 18);
+			}
+			else
+			{
+				n.add(melody.get(i));
 			}
 		}
 		
-		//n[3] = melody[3];
 		return n;//return the new melody
 	}
 	
