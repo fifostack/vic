@@ -6,10 +6,12 @@ public class midiGenetic {
 	
 	LinkedList<NoteObj> melody;
 	int octave = 18;
+	int fitness;
 	
 	public midiGenetic(LinkedList<NoteObj> m)
 	{
 		melody = m;
+		fitness = 0;
 	}
 	
 	public void setMelody(LinkedList<NoteObj> m)
@@ -17,7 +19,7 @@ public class midiGenetic {
 		melody = m;
 	}
 	
-	public LinkedList<NoteObj> refactor() //primitive melody altering method
+	public LinkedList<NoteObj> refactor() //primitive melody altering method NOT FINAL
 	{
 		LinkedList<NoteObj> n = new LinkedList<NoteObj>(); //create a new melody
 		n.add(melody.get(0));

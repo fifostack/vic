@@ -53,7 +53,7 @@ public class Vic
       
 //-------------------------------------------------------//
       
-      firstMelody(16); //generate the initial random melody
+      firstMelody(64); //generate the initial random melody of four bars
       
       test = new midiGenetic(melody1);
       
