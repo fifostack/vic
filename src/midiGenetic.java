@@ -53,18 +53,6 @@ public class midiGenetic {
 		return n;//return the new melody
 	}
 	
-	/*public int prevNote(int now)
-	{
-			for(int i = now; i >= 0; i--)
-			{
-				if(melody[i] != null)
-				{
-						return i;
-				}
-			}
-			return -1;
-	}
-	*/
 	
 }
 
