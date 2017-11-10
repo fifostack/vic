@@ -1,5 +1,3 @@
-//package vic;
-
 /**
  * Vic.java
  * @author Lucas Darnell, Jared Miller
@@ -18,7 +16,7 @@ import javax.sound.midi.*; // package for all midi classes
 
 public class Vic
 {
-  static long cur = 0;
+  static long cur = 0; //tracks current tick count
   static Sequence s;
   static Track t;
   static midiGenetic GA;
@@ -30,7 +28,6 @@ public class Vic
 	GA.init();
 	LinkedList<NoteObj> THEBEST = GA.getBest();
 	printMelody(THEBEST);
-	//System.out.println(GA.population.indexOf(THEBEST));
     System.out.println("midifile begin ");
     init();
       
@@ -58,7 +55,7 @@ public class Vic
 //-------------------------------------------------------//
       
 	  endTrack();
-	  writeFile("gen1.mid");
+	  writeFile("gen1.mid"); //writes the midi file
 
   } //main
   

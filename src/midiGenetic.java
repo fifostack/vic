@@ -5,11 +5,11 @@ import java.util.LinkedList;
 public class midiGenetic {
 	
 	public LinkedList<LinkedList<NoteObj>> population;
-	private int[] fitness;
+	private int[] fitness; //stores fitness of each individual
 	int generations;
-	private int popSize;
+	private int popSize; //size of each generation
 	int ticks; //length of each individual in ticks
-	int octave = 18;
+	int octave = 12; //size of an octave
 	
 	public midiGenetic()
 	{
@@ -31,7 +31,7 @@ public class midiGenetic {
 	{
 		for(int i = 0; i < popSize; i++)
 		{
-			population.add(new LinkedList<NoteObj>());
+			population.add(new LinkedList<NoteObj>());//create each individual
 		}
 		
 		for(int i = 0; i < popSize; i++)
@@ -75,20 +75,20 @@ public class midiGenetic {
 	
 	public void selection()
 	{
-		
+		//select individuals based on fitness
 	}
 	
 	public void crossover()
 	{
-		
+		//swap the notes of the parent melodies
 	}
 	
 	public void mutation()
 	{
-		
+		//mutate the notes, tending slightly to mutating "bad" notes
 	}
 	
-	public LinkedList<NoteObj> getBest()
+	public LinkedList<NoteObj> getBest() //returns the melody with the highest fitness
 	{
 		int max = -999;
 		int maxInd = 0;
@@ -102,7 +102,7 @@ public class midiGenetic {
 				maxInd = i;
 			}
 		}
-		System.out.println("Best found at index: " + maxInd);
+		System.out.println("Best found at index: " + maxInd + " with fitness: " + max);
 		return population.get(maxInd);
 	}
 	
@@ -111,24 +111,24 @@ public class midiGenetic {
 		return fitness[n];
 	}
 	
-	public LinkedList<NoteObj> createMelody(int ticks)
+	public LinkedList<NoteObj> createMelody(int ticks) //generates a single random melody
 	{
 		LinkedList<NoteObj> temp = new LinkedList<NoteObj>();
 		int rNote = 0, rDur = 0, curTotal = 0;
 		
 		rNote = (int)(Math.random()*96);
-		NoteObj keyN = new NoteObj(Note.Notes[rNote], 1);
+		NoteObj keyN = new NoteObj(Note.Notes[rNote], 1); //first note determines key, and is not played
 		
 		temp.add(keyN);
 		
-		while(curTotal < ticks)
+		while(curTotal < ticks) //fill the list with random notes until we reach the desired length
 		{
 			rNote = (int)(Math.random()*96);
 			//rDur = (int)((Math.random()*15)+1);
 			rDur = 4;   //set the length of the note in ticks (16 - whole note)
       
 			NoteObj n = new NoteObj(Note.Notes[rNote], rDur); //make a note from generated values
-			temp.add(n);                             	  //add it to the melody
+			temp.add(n);                             	      //add it to the melody
 			curTotal+= rDur;                                  //add to total ticks
       
 		}
