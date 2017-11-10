@@ -28,7 +28,9 @@ public class Vic
 	  
 	GA = new midiGenetic(100,64); //creates a genetic algorithm of 100 members of 64 ticks each (4 bars in 4/4 time)
 	GA.init();
-	
+	LinkedList<NoteObj> THEBEST = GA.getBest();
+	printMelody(THEBEST);
+	//System.out.println(GA.population.indexOf(THEBEST));
     System.out.println("midifile begin ");
     init();
       
@@ -51,11 +53,10 @@ public class Vic
       playNote(Note.c5, 4);// C 5
       rest(4); //16th note rest
       
+      playMelody(THEBEST);
+      
 //-------------------------------------------------------//
       
-      
-      
-   
 	  endTrack();
 	  writeFile("gen1.mid");
 
@@ -155,26 +156,13 @@ public class Vic
       { System.out.println("Exception caught in writeFile: " + e.toString()); }
   }
   
-  
-  /*---------------------- playMelody ----------------------------------
-  */
-  public static void playMelody(NoteObj[] m)
-  {
-    for(int i = 0; i < m.length; i++)
-    {
-		if(m[i] != null)
-			playNote(m[i]);
-	}
-    
-  }
-  
   /*---------------------- playMelody ----------------------------------
   */
   public static void playMelody(LinkedList<NoteObj> notes)
   {
-    while(notes.size() > 0)
+    while(notes.size() > 1)
     {
-		playNote(notes.removeFirst());
+		playNote(notes.remove(1));
 	}
     
   }
@@ -185,7 +173,7 @@ public class Vic
   {
 	System.out.print(" Melody Start:  ");
     
-    for(int i = 0; i < notes.size(); i++)
+    for(int i = 1; i < notes.size(); i++)
     {
       System.out.print(notes.get(i).toString());
     }

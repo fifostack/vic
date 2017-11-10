@@ -33,10 +33,49 @@ public class Note
   /*B MAJOR*/     {cS3,eF3,e3,fS3,gS3,bF3,b3,cS4,eF4,e4,fS4,gS4,bF4,b4,cS5,eF5,e5,fS5,gS5,bF5,b5,cS6,eF6,e6,fS6,gS6,bF6,b6,cS7,eF7,e7,fS7,gS7,bF7,b7,cS8,eF8,e8,fS8,gS8,bF8,b8,cS9,eF9,e9,fS9,gS9,bF9,b9,cS9,eF9,e9,fS9,gS9,bF9,b9,cS10,eF10,e10,fS10,gS10,bF10,b10},
   /*Fsharp MAJOR*/{cS3,eF3,f3,fS3,gS3,bF3,b3,cS4,eF4,e4,fS4,gS4,bF4,b4,cS5,eF5,e5,fS5,gS5,bF5,b5,cS6,eF6,e6,fS6,gS6,bF6,b6,cS7,eF7,e7,fS7,gS7,bF7,b7,cS8,eF8,e8,fS8,gS8,bF8,b8,cS9,eF9,e9,fS9,gS9,bF9,b9,cS10,eF10,e10,fS10,gS10,bF10,b10},
   /*Csharp MAJOR*/{cS3,eF3,f3,fS3,gS3,bF3,cS4,eF4,f4,fS4,gS4,bF4,cS5,eF5,f5,fS5,gS5,bF5,cS6,eF6,f6,fS6,gS6,bF6,cS7,eF7,f7,fS7,gS7,bF7,cS8,eF8,f8,fS8,gS8,bF8,cS9,eF9,f9,fS9,gS9,bF9,cS10,eF10,f10,fS10,gS10,bF10},
-  /*Aflat MAJOR*/ {c3,cS3,eF3,f3,g3,gS3,bF3,c4,cS4,eF4,f4,g4,gS4,bF4,c5,cS5,eF5,f5,g5,gS5,bF5,c6,cS6,eF6,f6,g6,gS6,bF6,c7,cS7,eF7,f7,g7,gS7,bF7,c8,cS8,eF8,f8,g8,gS8,bF8,c9,cS9,eF9,f9,g9,gS9,bF9,c10,cS10,eF10,f10,g10,gS10,bF10},
+  /*Gsharp MAJOR*/ {c3,cS3,eF3,f3,g3,gS3,bF3,c4,cS4,eF4,f4,g4,gS4,bF4,c5,cS5,eF5,f5,g5,gS5,bF5,c6,cS6,eF6,f6,g6,gS6,bF6,c7,cS7,eF7,f7,g7,gS7,bF7,c8,cS8,eF8,f8,g8,gS8,bF8,c9,cS9,eF9,f9,g9,gS9,bF9,c10,cS10,eF10,f10,g10,gS10,bF10},
   /*Eflat MAJOR*/ {c3,d3,eF3,f3,g3,gS3,bF3,c4,d4,eF4,f4,g4,gS4,bF4,c5,d5,eF5,f5,g5,gS5,bF5,c6,d6,eF6,f6,g6,gS6,bF6,c7,d7,eF7,f7,g7,gS7,bF7,c8,d8,eF8,f8,g8,gS8,bF8,c9,d9,eF9,f9,g9,gS9,bF9,c10,d10,eF10,f10,g10,gS10,bF10},
   /*Bflat MAJOR*/ {c3,d3,eF3,f3,g3,a3,bF3,c4,d4,eF4,f4,g4,a4,bF4,c5,d5,eF5,f5,g5,a5,bF5,c6,d6,eF6,f6,g6,a6,bF6,c7,d7,eF7,f7,g7,a7,bF6,c7,d7,eF7,f7,g7,a7,bF7,c8,d8,eF8,f8,g8,a8,bF8,c9,d9,eF9,f9,g9,a9,bF9,c10,d10,eF10,f10,g10,a10,bF10},
   /*F MAJOR*/     {c3,d3,e3,f3,g3,a3,bF3,c4,d4,e4,f4,g4,a4,bF4,c5,d5,e5,f5,g5,a5,bF5,c6,d6,e6,f6,g6,a6,bF6,c7,d7,e7,f7,g7,a7,bF7,c8,d8,e8,f8,g8,a8,bF8,c9,d9,e9,f9,g9,a9,bF9,c10,d10,e10,f10,g10,a10,bF10}};
   
+  public static int[] getKey(int num)
+  {
+		switch(num)
+		{
+				case c3:
+					return majors[0];
+				case g3:
+					return majors[1];
+				case d3:
+					return majors[2];
+				case a3:
+					return majors[3];
+				case e3:
+					return majors[4];
+				case b3:
+					return majors[5];
+				case fS3:
+					return majors[6];
+				case cS3:
+					return majors[7];
+				case gS3:
+					return majors[8];
+				case eF3:
+					return majors[9];
+				case bF3:
+					return majors[10];
+				case f3:
+					return majors[11];
+				default:
+					break;
+		}
+		int[] bad = {-1,-1,-1,-1};
+		return bad;
+  }
+  
  
 }
+
+
+
+
