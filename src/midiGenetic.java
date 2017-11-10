@@ -4,55 +4,71 @@ import java.util.LinkedList;
 
 public class midiGenetic {
 	
-	LinkedList<NoteObj> melody;
+	LinkedList<LinkedList<NoteObj>> population;
+	int generations;
+	private int popSize;
+	int ticks; //length of each individual in ticks
 	int octave = 18;
 	int fitness;
 	
-	public midiGenetic(LinkedList<NoteObj> m)
+	public midiGenetic()
 	{
-		melody = m;
-		fitness = 0;
+		population = new LinkedList<LinkedList<NoteObj>>();
+		ticks = 64;
+		popSize = 100;
 	}
 	
-	public void setMelody(LinkedList<NoteObj> m)
+	public midiGenetic(int n, int t)
 	{
-		melody = m;
+		population = new LinkedList<LinkedList<NoteObj>>();
+		ticks = t;
+		popSize = n;
 	}
 	
-	public LinkedList<NoteObj> refactor() //primitive melody altering method NOT FINAL
+	public void init() //initializes population with popSize Linked Lists of melodies
 	{
-		LinkedList<NoteObj> n = new LinkedList<NoteObj>(); //create a new melody
-		n.add(melody.get(0));
-		
-		for(int i = 1; i < melody.size(); i++) //for every note but the first note
+		for(int i = 0; i < popSize; i++)
 		{
-			int dis = NoteObj.distance(melody.get(i), n.get(i-1)); //distance between the notes
-			
-			if((Math.abs(dis)) > octave) //if the notes are more than an octave away
-			{ 
-				NoteObj temp = melody.get(i);
-				if(dis > 0) //if its too high, pull it down an octave
-				{
-					temp = new NoteObj((melody.get(i).getNote()) - 18,melody.get(i).getLength());
-					n.add(temp);
-				}
-				else if(dis < 0) //if its too low, push it up an octave
-				{
-					temp = new NoteObj((melody.get(i).getNote()) + 18,melody.get(i).getLength());
-					n.add(temp);
-				}
-				else
-				{
-					System.out.println();
-				}
-			}
-			else
-			{
-				n.add(melody.get(i));
-			}
+			population.add(new LinkedList<NoteObj>());
 		}
 		
-		return n;//return the new melody
+		for(LinkedList<NoteObj> i : population)
+		{
+			i = createMelody(ticks);
+		}
+	}
+	
+	public void selection()
+	{
+		
+	}
+	
+	public void crossover()
+	{
+		
+	}
+	
+	public void mutation()
+	{
+		
+	}
+
+	public LinkedList<NoteObj> createMelody(int ticks)
+	{
+		LinkedList<NoteObj> temp = new LinkedList<NoteObj>();
+		int rNote = 0, rDur = 0, curTotal = 0;
+		while(curTotal < ticks)
+		{
+			rNote = (int)(Math.random()*96);
+			//rDur = (int)((Math.random()*15)+1);
+			rDur = 4;   //set the length of the note in ticks (16 - whole note)
+      
+			NoteObj n = new NoteObj(Note.Notes[rNote], rDur); //make a note from generated values
+			temp.add(n);                             	  //add it to the melody
+			curTotal+= rDur;                                  //add to total ticks
+      
+		}
+		return temp;
 	}
 	
 	

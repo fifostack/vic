@@ -21,15 +21,15 @@ public class Vic
   static long cur = 0;
   static Sequence s;
   static Track t;
-  static LinkedList<NoteObj> melody1, melody2, melody3, melody4;
-  static midiGenetic test;
+  static midiGenetic GA;
   
   
-  public static void main(String argv[]) {
-	melody1 = new LinkedList<NoteObj>();  
+  public static void main(String argv[]) {  
 	  
+	GA = new midiGenetic(100,64); //creates a genetic algorithm of 100 members of 64 ticks each (4 bars in 4/4 time)
+	GA.init();
+	
     System.out.println("midifile begin ");
-    
     init();
       
 //------------- PLAYNOTE TESTING ------------------------//
@@ -53,31 +53,8 @@ public class Vic
       
 //-------------------------------------------------------//
       
-      firstMelody(64); //generate the initial random melody of four bars
-      
-      test = new midiGenetic(melody1);
-      
-      printMelody(melody1);
-      
-      melody2 = test.refactor(); //create a refactored melody
-      test.setMelody(melody2);
-      printMelody(melody2);
-      
-      melody3 = test.refactor();
-      test.setMelody(melody3);
-      printMelody(melody3);
-      
-      melody4 = test.refactor();
-      printMelody(melody4);
       
       
-      playMelody(melody1);
-      rest(4);
-      playMelody(melody2);
-      rest(4);
-      playMelody(melody3);
-      rest(4);
-      playMelody(melody4);
    
 	  endTrack();
 	  writeFile("gen1.mid");
@@ -178,23 +155,6 @@ public class Vic
       { System.out.println("Exception caught in writeFile: " + e.toString()); }
   }
   
- /*---------------------- firstMelody ----------------------------------
-  */
-  public static void firstMelody(int ticks)
-  {
-    int rNote = 0, rDur = 0, curTotal = 0;
-    while(curTotal < ticks)
-    {
-      rNote = (int)(Math.random()*96);
-      //rDur = (int)((Math.random()*15)+1);
-      rDur = 4;   //set the length of the note in ticks (16 - whole note)
-      
-      NoteObj n = new NoteObj(Note.Notes[rNote], rDur); //make a note from generated values
-      melody1.add(n);                             //add it to the melody
-      curTotal+= rDur;                                  //add to total ticks
-      
-    }
-  }
   
   /*---------------------- playMelody ----------------------------------
   */

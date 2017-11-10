@@ -1,11 +1,13 @@
-
+/**
+ * This file defines the note object to be used in melodies
+ */
 
 public class NoteObj
 {
-  private int note;
-  private int length;
+  private int note; // the hex number of the note's key
+  private int length; // the number of ticls the note plays
   
-  public NoteObj()
+  public NoteObj() // default constructor
   {
     note = Note.c3;
     length = 4;
