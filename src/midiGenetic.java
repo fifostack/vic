@@ -4,14 +4,17 @@ import java.util.LinkedList;
 
 public class midiGenetic {
 	
-	public LinkedList<LinkedList<NoteObj>> population;
+	LinkedList<LinkedList<NoteObj>> population;
 	private int[] fitness; //stores fitness of each individual
-	int generations;
 	private int popSize; //size of each generation
+	private static int maxFitness = 31; // maximum possible fitness (at this point)
+										// 16 notes in key, each within octave of the first
+										
+	int gens; //number of generations
 	int ticks; //length of each individual in ticks
 	int octave = 12; //size of an octave
 	
-	public midiGenetic()
+	public midiGenetic() //default constructor
 	{
 		population = new LinkedList<LinkedList<NoteObj>>();
 		ticks = 65;
@@ -44,6 +47,8 @@ public class midiGenetic {
 	
 	public int calcFit(LinkedList<NoteObj> no) //calculates the fitness of an individual
 	{
+		int keyFit = 0;
+		int octFit = 0;
 		int totalFit = 0;
 		int refNote = no.get(1).getNote();//second note is used as a reference note
 		int keyNote = no.get(0).getNote();//first note sets the key
@@ -56,19 +61,20 @@ public class midiGenetic {
 				for(int k : KEY) //check the array of acceptable in-key notes
 				{
 						if(i.getNote() == k)//if the note is in key, add fitness
-							totalFit++;
+							keyFit++;
 				}
 		}
-	///*---- Give fitness points based on notes within one octave of reference note *///
+	 ///*---- Give fitness points based on notes within one octave of reference note *///
 		for(int i = 2; i < no.size(); i++)
 		{
 			int dis = NoteObj.distance(no.get(i),no.get(i-1));
 			if(dis < octave)
 			{
-				totalFit++;
+				octFit++;
 			}
 		}
 		
+		totalFit = keyFit + octFit;
 		return totalFit;
 	}
 	

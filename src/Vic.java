@@ -29,7 +29,7 @@ public class Vic
 	LinkedList<NoteObj> THEBEST = GA.getBest();
 	printMelody(THEBEST);
     System.out.println("midifile begin ");
-    init();
+    initTrack(); //create midi file and set initial values
       
 //------------- PLAYNOTE TESTING ------------------------//
 
@@ -48,9 +48,10 @@ public class Vic
       playNote(Note.e5, 2);// E 5
       playNote(Note.d5, 2);// D 5
       playNote(Note.c5, 4);// C 5
-      rest(4); //16th note rest
       
-      playMelody(THEBEST);
+      rest(4); //4th note rest
+      
+      playMelody(THEBEST); //play individual with highest fitness
       
 //-------------------------------------------------------//
       
@@ -62,7 +63,7 @@ public class Vic
  /*------------------------ Init ----------------------------------
   * sends initial MIDI settings
   */
-  public static void init() 
+  public static void initTrack() 
   {
 	  try
     {
