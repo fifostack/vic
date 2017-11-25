@@ -23,11 +23,11 @@ public class Vic
   
   
   public static void main(String argv[]) {  
-	  
-	GA = new midiGenetic(100,64); //creates a genetic algorithm of 100 members of 64 ticks each (4 bars in 4/4 time)
-	GA.init();
-	LinkedList<NoteObj> THEBEST = GA.getBest();
-	printMelody(THEBEST);
+   
+ GA = new midiGenetic(100,64); //creates a genetic algorithm of 100 members of 64 ticks each (4 bars in 4/4 time)
+ GA.init();
+ LinkedList<NoteObj> THEBEST = GA.getBest();
+ printMelody(THEBEST);
     System.out.println("midifile begin ");
     initTrack(); //create midi file and set initial values
       
@@ -55,8 +55,8 @@ public class Vic
       
 //-------------------------------------------------------//
       
-	  endTrack();
-	  writeFile("gen1.mid"); //writes the midi file
+   endTrack();
+   writeFile("gen1.mid"); //writes the midi file
 
   } //main
   
@@ -65,7 +65,7 @@ public class Vic
   */
   public static void initTrack() 
   {
-	  try
+   try
     {
 //****  Create a new MIDI sequence with 24 ticks per beat  ****
       s = new Sequence(javax.sound.midi.Sequence.PPQ,4);
@@ -115,7 +115,7 @@ public class Vic
   }
   catch(Exception e)
   {
-	  System.out.println("Exception caught in init: " + e.toString());//print any issue
+   System.out.println("Exception caught in init: " + e.toString());//print any issue
   }
 }
 
@@ -124,8 +124,8 @@ public class Vic
   */
   public static void endTrack() 
   {
-	try{
-	  //****  set end of track (meta event) 4 ticks later  ****
+ try{
+   //****  set end of track (meta event) 4 ticks later  ****
       MetaMessage mt = new MetaMessage();
       byte[] bet = {}; // empty array
       mt.setMessage(0x2F,bet,0);
@@ -146,9 +146,9 @@ public class Vic
   */
   public static void writeFile(String f)
   {
-	  try{
-	  File outfile = new File("" + f);
-	  MidiSystem.write(s,1,outfile);
+   try{
+   File outfile = new File("" + f);
+   MidiSystem.write(s,1,outfile);
       }
       catch(Exception e)
       { System.out.println("Exception caught in writeFile: " + e.toString()); }
@@ -160,8 +160,8 @@ public class Vic
   {
     while(notes.size() > 1)
     {
-		playNote(notes.remove(1));
-	}
+  playNote(notes.remove(1));
+ }
     
   }
   
@@ -169,7 +169,7 @@ public class Vic
   */
   static void printMelody(LinkedList<NoteObj> notes) //display each note in the object array 
   {
-	System.out.print(" Melody Start:  ");
+ System.out.print(" Melody Start:  ");
     
     for(int i = 1; i < notes.size(); i++)
     {
@@ -206,7 +206,7 @@ public class Vic
   
   public static void playNote(NoteObj n) //alternative object method
   {
-	  try{
+   try{
       //****  note on - E3  ****
       ShortMessage mm = new ShortMessage();
       mm.setMessage(ShortMessage.NOTE_ON,n.getNote(),0x60);
