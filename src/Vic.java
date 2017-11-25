@@ -26,6 +26,7 @@ public class Vic
    
  GA = new midiGenetic(100,64); //creates a genetic algorithm of 100 members of 64 ticks each (4 bars in 4/4 time)
  GA.init();
+ GA.runGenetics(1);
  LinkedList<NoteObj> THEBEST = GA.getBest();
  printMelody(THEBEST);
     System.out.println("midifile begin ");

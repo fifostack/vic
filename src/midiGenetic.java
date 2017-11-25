@@ -52,9 +52,13 @@ public class midiGenetic {
  {
    for(int i = 0; i < generations; i++)
    {
+     System.out.println("Selecting...");
      selection();
+     System.out.println("Performing crossover...");
      crossover();
+     System.out.println("Mutating...");
      mutation();
+     getBest();
      System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd]);
    }
  }
@@ -96,7 +100,7 @@ public class midiGenetic {
  public void selection()
  {
   //select individuals based on fitness
-  LinkedList<LinkedList<NoteObj>> newPop = new LinkedList<LinkedList<NoteObj>>();
+  newPop = new LinkedList<LinkedList<NoteObj>>(); //initialize the new population list
   
   int size = popSize;
   double rand = 0;
@@ -110,7 +114,7 @@ public class midiGenetic {
     for(int j = 0; j < size; j++)
     {
       rand = Math.random();
-      if(rand <= (fitness[j]/(maxFitness*1.0)))
+      if(rand <= (fitness[j]/(maxFitness*1.0))) //higher firness means higher selection chance
       {
         newPop.add(population.get(j));
         population.remove(j);
@@ -133,8 +137,38 @@ public class midiGenetic {
  ///CROSSOVER-----------------------------------------------------------------------
  public void crossover()
  {
-  //swap the notes of the parent melodies
-  
+   LinkedList<NoteObj> p1, p2, newP1, newP2;
+   double cPoint; //crossover point
+   //swap the notes of the parent melodies
+   for(int i = 1; i<newPop.size(); i+=2) //for every two melodies
+   {
+     p1 = newPop.get(i-1); //grab the twp parents for crossover
+     p2 = newPop.get(i);
+     
+     newP1 = new LinkedList<NoteObj>();
+     newP2 = new LinkedList<NoteObj>();
+     
+     cPoint = Math.random() * p1.size() + 1;
+     
+     for(int j = 0; i < p1.size(); i++)
+     {
+       if(j < (int)cPoint)
+       {
+         newP1.add(p1.removeFirst());
+         newP2.add(p2.removeFirst());
+       }
+       else //swap insertion after the crossover point
+       {
+         newP1.add(p2.removeFirst());
+         newP2.add(p1.removeFirst());
+       }
+     }
+     
+     newPop.set(i-1, newP1); //insert the new parents
+     newPop.set(i, newP2); 
+     
+   }
+   
  }
  ///CROSSOVER END-------------------------------------------------------------------
  
