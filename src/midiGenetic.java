@@ -53,11 +53,12 @@ public class midiGenetic {
    for(int i = 0; i < generations; i++)
    {
      System.out.println("Selecting...");
-     //selection();
+     selection();
      System.out.println("Performing crossover...");
-     //crossover();
+     crossover();
      System.out.println("Mutating...");
      //mutation();
+     newGen();
      getBest();
      System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd]);
    }
@@ -223,10 +224,15 @@ public class midiGenetic {
      newPop.set(i,newMelody);
    }
    
-   population = newPop;
+   //population = newPop;
    //mutate the notes, tending slightly to mutating "bad" notes
  }
  ///MUTATION END--------------------------------------------------------------------
+ 
+ public void newGen()
+ {
+   population = newPop;
+ }
  
  ///GET BEST------------------------------------------------------------------------
  public LinkedList<NoteObj> getBest() //returns the melody with the highest fitness
