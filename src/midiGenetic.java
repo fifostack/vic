@@ -129,9 +129,14 @@ public class midiGenetic {
       isSelect = true;
     }
     size--;
+    
+    for(int k = 0; k < population.size(); k++)
+    {
+      fitness[k] = calcFit(population.get(k));
+    }
+    
   }
-  
-  population = newPop;
+  //population = newPop;
   
  }
  ///SELECTION END-------------------------------------------------------------------
