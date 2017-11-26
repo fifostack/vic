@@ -176,12 +176,15 @@ public class midiGenetic {
      
    }
    
+   
+   
  }
  ///CROSSOVER END-------------------------------------------------------------------
  
  ///MUTATION------------------------------------------------------------------------
  public void mutation()
  {
+   population = newPop;
   //mutate the notes, tending slightly to mutating "bad" notes
  }
  ///MUTATION END--------------------------------------------------------------------
