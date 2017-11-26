@@ -131,6 +131,8 @@ public class midiGenetic {
     size--;
   }
   
+  population = newPop;
+  
  }
  ///SELECTION END-------------------------------------------------------------------
  
@@ -185,7 +187,7 @@ public class midiGenetic {
   int max = -999;
   maxInd = 0;
   
-  for(int i = 0; i < fitness.length; i++)
+  for(int i = 0; i < population.size(); i++)
   {
    if(fitness[i] > max)
    {
