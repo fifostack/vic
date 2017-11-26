@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 public class midiGenetic {
  
- LinkedList<LinkedList<NoteObj>> population;
+ public LinkedList<LinkedList<NoteObj>> population;
  LinkedList<LinkedList<NoteObj>> newPop;
  private int[] fitness; //stores fitness of each individual
  private int popSize; //size of each generation
@@ -53,11 +53,11 @@ public class midiGenetic {
    for(int i = 0; i < generations; i++)
    {
      System.out.println("Selecting...");
-     selection();
+     //selection();
      System.out.println("Performing crossover...");
-     crossover();
+     //crossover();
      System.out.println("Mutating...");
-     mutation();
+     //mutation();
      getBest();
      System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd]);
    }
@@ -184,8 +184,47 @@ public class midiGenetic {
  ///MUTATION------------------------------------------------------------------------
  public void mutation()
  {
+   LinkedList<NoteObj> melody, newMelody;
+   
+   for(int i = 0; i<newPop.size(); i++)
+   {
+     melody = newPop.get(i);
+     newMelody = new LinkedList<NoteObj>(); //create a new melody
+     newMelody.add(melody.get(0));
+     
+     for(int j = 1; i < melody.size(); i++) //for every note but the first note
+     {
+       int dis = NoteObj.distance(melody.get(j), newMelody.get(j-1)); //distance between the notes
+       
+       if((Math.abs(dis)) > octave) //if the notes are more than an octave away
+       { 
+         NoteObj temp = melody.get(j);
+         if(dis > 0) //if its too high, pull it down an octave
+         {
+           temp = new NoteObj((melody.get(j).getNote()) - 18,melody.get(j).getLength());
+           newMelody.add(temp);
+         }
+         else if(dis < 0) //if its too low, push it up an octave
+         {
+           temp = new NoteObj((melody.get(j).getNote()) + 18,melody.get(j).getLength());
+           newMelody.add(temp);
+         }
+         else
+         {
+           System.out.println();
+         }
+       }
+       else
+       {
+         newMelody.add(melody.get(i));
+       }
+     }
+     
+     newPop.set(i,newMelody);
+   }
+   
    population = newPop;
-  //mutate the notes, tending slightly to mutating "bad" notes
+   //mutate the notes, tending slightly to mutating "bad" notes
  }
  ///MUTATION END--------------------------------------------------------------------
  
