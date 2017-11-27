@@ -131,9 +131,9 @@ public class midiGenetic {
     }
     size--;
     
-    for(int k = 0; k < population.size(); k++)
+    for(int k = 0; k < newPop.size(); k++)
     {
-      fitness[k] = calcFit(population.get(k));
+      fitness[k] = calcFit(newPop.get(k));
     }
     
   }
@@ -148,9 +148,10 @@ public class midiGenetic {
    LinkedList<NoteObj> p1, p2, newP1, newP2;
    double cPoint; //crossover point
    //swap the notes of the parent melodies
+   
    for(int i = 1; i<newPop.size(); i+=2) //for every two melodies
    {
-     p1 = newPop.get(i-1); //grab the twp parents for crossover
+     p1 = newPop.get(i-1); //grab the two parents for crossover
      p2 = newPop.get(i);
      
      newP1 = new LinkedList<NoteObj>();
@@ -158,7 +159,8 @@ public class midiGenetic {
      
      cPoint = Math.random() * p1.size() + 1;
      
-     for(int j = 0; i < p1.size(); i++)
+     int temp = p1.size();
+     for(int j = 0; j < temp; j++)
      {
        if(j < (int)cPoint)
        {
@@ -176,6 +178,11 @@ public class midiGenetic {
      newPop.set(i, newP2); 
      
    }
+   
+   for(int k = 0; k < newPop.size(); k++)
+    {
+      fitness[k] = calcFit(newPop.get(k));
+    }
    
    
    
@@ -212,7 +219,7 @@ public class midiGenetic {
          }
          else
          {
-           System.out.println();
+           System.out.println("uhhh");
          }
        }
        else

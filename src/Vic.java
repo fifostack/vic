@@ -171,14 +171,14 @@ public class Vic
   */
   static void printMelody(LinkedList<NoteObj> notes) //display each note in the object array 
   {
- System.out.print(" Melody Start:  ");
+	System.out.print(" Start: ");
     
     for(int i = 1; i < notes.size(); i++)
     {
       System.out.print(notes.get(i).toString());
     }
     
-    System.out.println(" Melody End");
+    System.out.println(" End");
   }
   
   static void printAll(LinkedList<LinkedList<NoteObj>> pop)
@@ -220,13 +220,13 @@ public class Vic
   public static void playNote(NoteObj n) //alternative object method
   {
    try{
-      //****  note on - E3  ****
+      //****  note on  ****
       ShortMessage mm = new ShortMessage();
       mm.setMessage(ShortMessage.NOTE_ON,n.getNote(),0x60);
       MidiEvent me = new MidiEvent(mm,(long)cur);//start the note at this tick
       t.add(me);
       
-      //****  note off - E3  ****
+      //****  note off  ****
       mm = new ShortMessage();
       mm.setMessage(ShortMessage.NOTE_OFF,n.getNote(),0x40);
       me = new MidiEvent(mm,(long)(cur+ (n.getLength())));//end note on current+length
