@@ -28,7 +28,7 @@ public class Vic
  GA.init();
  GA.runGenetics(1);
  LinkedList<NoteObj> THEBEST = GA.getBest();
- printAll(GA.population);
+ //printAll(GA.population);
  printMelody(THEBEST);
     System.out.println("midifile begin ");
     initTrack(); //create midi file and set initial values

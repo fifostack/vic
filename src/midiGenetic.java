@@ -53,7 +53,7 @@ public class midiGenetic {
    for(int i = 0; i < generations; i++)
    {
      System.out.println("Selecting...");
-     //selection();
+     selection();
      System.out.println("Performing crossover...");
      //crossover();
      System.out.println("Mutating...");
@@ -136,7 +136,11 @@ public class midiGenetic {
     }
     
   }
-  //population = newPop;
+  population = newPop;
+  for(int k = 0; k < population.size(); k++)
+    {
+      fitness[k] = calcFit(population.get(k));
+    }
   
  }
  ///SELECTION END-------------------------------------------------------------------
