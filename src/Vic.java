@@ -25,11 +25,17 @@ public class Vic
   public static void main(String argv[]) {  
    
  GA = new midiGenetic(100,64); //creates a genetic algorithm of 100 members of 64 ticks each (4 bars in 4/4 time)
- GA.init(); 				   //create initial population
+ GA.init();        //create initial population
  //printAll(GA.population);
  LinkedList<NoteObj> startingBest = GA.getBest(); //best of initial generation
+ printMelody(startingBest);
+ GA.runGenetics(10);
+ LinkedList<NoteObj> THEBEST = GA.getBest();
  
-     
+ printMelody(THEBEST);
+    
+      initTrack(); //create midi file and set initial values
+      
 //------------- PLAYNOTE TESTING ------------------------//
 
       initTrack(); //create midi file and set initial values
@@ -62,7 +68,7 @@ public class Vic
       writeFile("gen1.mid");
       
       GA.runGenetics(1000);
-	  LinkedList<NoteObj> THEBEST = GA.getBest();//best after all generations
+      THEBEST = GA.getBest();//best after all generations
       
       initTrack();
       printMelody(THEBEST);
@@ -139,7 +145,7 @@ public class Vic
   */
   public static void endTrack() 
   {
-	  try{
+   try{
    //****  set end of track (meta event) 4 ticks later  ****
       MetaMessage mt = new MetaMessage();
       byte[] bet = {}; // empty array
@@ -173,11 +179,11 @@ public class Vic
   */
   public static void playMelody(LinkedList<NoteObj> notes)
   {
-	
+ 
     for(int i = 1; i < notes.size(); i++)
     {
-		playNote(notes.get(i));
-	}
+  playNote(notes.get(i));
+ }
     
   }
   
@@ -185,7 +191,7 @@ public class Vic
   */
   static void printMelody(LinkedList<NoteObj> notes) //display each note in the object array 
   {
-	System.out.print(" Start: ");
+ System.out.print(" Start: ");
     System.out.println("NOTES SIZE: " + notes.size());
     
     for(int i = 0; i < notes.size(); i++)

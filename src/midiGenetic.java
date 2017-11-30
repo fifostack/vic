@@ -327,6 +327,14 @@ public class midiGenetic {
    curTotal+= rDur;                                  //add to total ticks
       
   }
+  
+  if(curTotal > ticks)
+  {
+    int tickDiff = curTotal - ticks;
+    int bigsLength = temp.get(temp.size()-1).getLength();
+    temp.get(temp.size()-1).setLength(bigsLength - tickDiff);
+  }
+  
   return temp;
  }
  ///CREATE MELODY END-------------------------------------------------------------------------
