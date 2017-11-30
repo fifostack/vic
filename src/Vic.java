@@ -28,11 +28,8 @@ public class Vic
  GA.init();        //create initial population
  //printAll(GA.population);
  LinkedList<NoteObj> startingBest = GA.getBest(); //best of initial generation
+ LinkedList<NoteObj> THEBEST;
  printMelody(startingBest);
- GA.runGenetics(10);
- LinkedList<NoteObj> THEBEST = GA.getBest();
- 
- printMelody(THEBEST);
     
       initTrack(); //create midi file and set initial values
       
