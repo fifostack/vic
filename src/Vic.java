@@ -16,22 +16,26 @@ import javax.sound.midi.*; // package for all midi classes
 
 public class Vic
 {
-  static long cur = 0; //tracks current tick count
+  static long cur; //tracks current tick count
   static Sequence s;
   static Track t;
   static midiGenetic GA;
+  
+  LinkedList<NoteObj> startingBest, THEBEST;
   
   
   public static void main(String argv[]) {  
    
  GA = new midiGenetic(100,64); //creates a genetic algorithm of 100 members of 64 ticks each (4 bars in 4/4 time)
  GA.init();
- GA.runGenetics(1);
+ //printAll(GA.population);
+ LinkedList<NoteObj> startingBest = GA.getBest();
+ GA.runGenetics(10);
  LinkedList<NoteObj> THEBEST = GA.getBest();
- printAll(GA.population);
+ printMelody(startingBest);
  printMelody(THEBEST);
-    System.out.println("midifile begin ");
-    initTrack(); //create midi file and set initial values
+    
+      initTrack(); //create midi file and set initial values
       
 //------------- PLAYNOTE TESTING ------------------------//
 
@@ -53,12 +57,21 @@ public class Vic
       
       rest(4); //4th note rest
       
-      playMelody(THEBEST); //play individual with highest fitness
-      
 //-------------------------------------------------------//
       
-   endTrack();
-   writeFile("gen1.mid"); //writes the midi file
+      endTrack();
+      writeFile("scale.mid"); //writes the midi file
+      
+      initTrack();
+      playMelody(startingBest);
+      endTrack();
+      writeFile("gen1.mid");
+      
+      initTrack();
+      //printMelody(THEBEST);
+      playMelody(THEBEST); //play individual with highest fitness
+      endTrack();
+      writeFile("best.mid");
 
   } //main
   
@@ -67,6 +80,9 @@ public class Vic
   */
   public static void initTrack() 
   {
+   cur = 0;
+   
+   System.out.println("midifile begin ");
    try
     {
 //****  Create a new MIDI sequence with 24 ticks per beat  ****
@@ -126,7 +142,7 @@ public class Vic
   */
   public static void endTrack() 
   {
- try{
+	  try{
    //****  set end of track (meta event) 4 ticks later  ****
       MetaMessage mt = new MetaMessage();
       byte[] bet = {}; // empty array
@@ -172,7 +188,7 @@ public class Vic
   static void printMelody(LinkedList<NoteObj> notes) //display each note in the object array 
   {
 	System.out.print(" Start: ");
-    
+    System.out.println("NOTES SIZE: " + notes.size());
     for(int i = 1; i < notes.size(); i++)
     {
       System.out.print(notes.get(i).toString());

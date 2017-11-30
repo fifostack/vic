@@ -7,7 +7,7 @@ public class midiGenetic {
  public LinkedList<LinkedList<NoteObj>> population;
  LinkedList<LinkedList<NoteObj>> newPop;
  private int[] fitness; //stores fitness of each individual
- private int popSize; //size of each generation
+ private int POPSIZE; //size of each generation
  private static int maxFitness = 31; // maximum possible fitness (at this point)
           // 16 notes in key, each within octave of the first
  
@@ -21,26 +21,26 @@ public class midiGenetic {
  {
   population = new LinkedList<LinkedList<NoteObj>>();
   ticks = 65;
-  popSize = 100;
-  fitness = new int[popSize];
+  POPSIZE = 100;
+  fitness = new int[POPSIZE];
  }
  
  public midiGenetic(int n, int t)
  {
   population = new LinkedList<LinkedList<NoteObj>>();
   ticks = t;
-  popSize = n;
-  fitness = new int[popSize];
+  POPSIZE = n;
+  fitness = new int[POPSIZE];
  }
  
  public void init() //initializes population with popSize Linked Lists of melodies
  {
-  for(int i = 0; i < popSize; i++)
+  for(int i = 0; i < POPSIZE; i++)
   {
    population.add(new LinkedList<NoteObj>());//create each individual
   }
   
-  for(int i = 0; i < popSize; i++)
+  for(int i = 0; i < POPSIZE; i++)
   {
    population.set(i, createMelody(ticks, Note.c3));
    fitness[i] = calcFit(population.get(i));
@@ -103,10 +103,10 @@ public class midiGenetic {
   //select individuals based on fitness
   newPop = new LinkedList<LinkedList<NoteObj>>(); //initialize the new population list
   
-  int size = popSize;
+  int size = POPSIZE;
   double rand = 0;
   boolean isSelect = false;
-  for(int i = 0; i < (int)(Math.ceil(popSize/2)); i++)
+  for(int i = 0; i < (int)(Math.ceil(POPSIZE/2)); i++)
   {
     newPop.add(getBest());
     population.remove(maxInd);
@@ -198,9 +198,10 @@ public class midiGenetic {
    {
      melody = newPop.get(i);
      newMelody = new LinkedList<NoteObj>(); //create a new melody
-     newMelody.add(melody.get(0));
+     newMelody.add(melody.get(0)); //copy ke note
+     newMelody.add(melody.get(1));
      
-     for(int j = 1; i < melody.size(); i++) //for every note but the first note
+     for(int j = 2; j < melody.size(); j++) //for every note but the first note
      {
        int dis = NoteObj.distance(melody.get(j), newMelody.get(j-1)); //distance between the notes
        
@@ -224,12 +225,17 @@ public class midiGenetic {
        }
        else
        {
-         newMelody.add(melody.get(i));
+         newMelody.add(melody.get(j));
        }
      }
      
      newPop.set(i,newMelody);
    }
+   
+   for(int k = 0; k < newPop.size(); k++)
+    {
+      fitness[k] = calcFit(newPop.get(k));
+    }
    
    //population = newPop;
    //mutate the notes, tending slightly to mutating "bad" notes
