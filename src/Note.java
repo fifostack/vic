@@ -67,6 +67,7 @@ public class Note
 				case f3:
 					return majors[11];
 				default:
+					System.out.print("No applicable key found: " + num + " ");
 					break;
 		}
 		int[] bad = {-1,-1,-1,-1};

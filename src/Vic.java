@@ -20,16 +20,14 @@ public class Vic
   static Sequence s;
   static Track t;
   static midiGenetic GA;
-  
-  LinkedList<NoteObj> startingBest, THEBEST;
-  
+    
   
   public static void main(String argv[]) {  
    
  GA = new midiGenetic(100,64); //creates a genetic algorithm of 100 members of 64 ticks each (4 bars in 4/4 time)
- GA.init();
+ GA.init();        //create initial population
  //printAll(GA.population);
- LinkedList<NoteObj> startingBest = GA.getBest();
+ LinkedList<NoteObj> startingBest = GA.getBest(); //best of initial generation
  printMelody(startingBest);
  GA.runGenetics(10);
  LinkedList<NoteObj> THEBEST = GA.getBest();
@@ -40,6 +38,7 @@ public class Vic
       
 //------------- PLAYNOTE TESTING ------------------------//
 
+      initTrack(); //create midi file and set initial values
       playNote(Note.c5, 4);// C 5
       playNote(Note.d5, 2);// D 5
       playNote(Note.e5, 2);// E 5
@@ -57,19 +56,22 @@ public class Vic
       playNote(Note.c5, 4);// C 5
       
       rest(4); //4th note rest
-      
-//-------------------------------------------------------//
-      
       endTrack();
       writeFile("scale.mid"); //writes the midi file
       
+//-------------------------------------------------------//
+      
       initTrack();
+      printMelody(startingBest);
       playMelody(startingBest);
       endTrack();
       writeFile("gen1.mid");
       
+      GA.runGenetics(1000);
+      THEBEST = GA.getBest();//best after all generations
+      
       initTrack();
-      //printMelody(THEBEST);
+      printMelody(THEBEST);
       playMelody(THEBEST); //play individual with highest fitness
       endTrack();
       writeFile("best.mid");
@@ -177,9 +179,10 @@ public class Vic
   */
   public static void playMelody(LinkedList<NoteObj> notes)
   {
-    while(notes.size() > 1)
+ 
+    for(int i = 1; i < notes.size(); i++)
     {
-  playNote(notes.remove(1));
+  playNote(notes.get(i));
  }
     
   }
@@ -190,7 +193,8 @@ public class Vic
   {
  System.out.print(" Start: ");
     System.out.println("NOTES SIZE: " + notes.size());
-    for(int i = 1; i < notes.size(); i++)
+    
+    for(int i = 0; i < notes.size(); i++)
     {
       System.out.print(notes.get(i).toString());
     }
