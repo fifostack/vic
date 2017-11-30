@@ -60,7 +60,7 @@ public class midiGenetic {
      mutation();
      newGen();
      getBest();
-     System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd]);
+     System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd] + " and length: " + getLength(getBest()));
    }
  }
  
@@ -155,24 +155,38 @@ public class midiGenetic {
    {
      p1 = newPop.get(i-1); //grab the two parents for crossover
      p2 = newPop.get(i);
+     int temp;
      
      newP1 = new LinkedList<NoteObj>();
      newP2 = new LinkedList<NoteObj>();
      
-     cPoint = Math.random() * p1.size() + 1;
+     if(p1.size() < p2.size())
+     {
+		 temp = p2.size();
+		 cPoint = Math.random() * p1.size() + 1;
+     }
+     else
+     {
+		 temp = p1.size();
+		 cPoint = Math.random() * p2.size() + 1;
+     }
+
      
-     int temp = p1.size();
      for(int j = 0; j < temp; j++)
      {
        if(j < (int)cPoint)
        {
-         newP1.add(p1.removeFirst());
-         newP2.add(p2.removeFirst());
+		   if(p1.peekFirst() != null)
+				newP1.add(p1.removeFirst());
+		   if(p2.peekFirst() != null)
+				newP2.add(p2.removeFirst());
        }
        else //swap insertion after the crossover point
        {
-         newP1.add(p2.removeFirst());
-         newP2.add(p1.removeFirst());
+		   if(p2.peekFirst() != null)
+				newP1.add(p2.removeFirst());
+		   if(p1.peekFirst() != null)
+				newP2.add(p1.removeFirst());
        }
      }
      
@@ -276,6 +290,16 @@ public class midiGenetic {
   return fitness[n];     
  }                       
  ///GET FIT END-----------
+ 
+ public int getLength(LinkedList<NoteObj> x)
+ {
+	 int length = 0;
+	 for(NoteObj i : x)
+	 {
+		 length += i.getLength();
+	 }
+	 return length;
+ }
  
  ///CREATE MELODY-----------------------------------------------------------------------------
  public LinkedList<NoteObj> createMelody(int ticks, int r) //generates a single random melody
