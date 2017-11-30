@@ -57,7 +57,7 @@ public class midiGenetic {
      System.out.println("Performing crossover...");
      crossover();
      System.out.println("Mutating...");
-     mutation();
+     mutation(.95);
      newGen();
      getBest();
      System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd] + " and length: " + getLength(getBest()));
@@ -117,7 +117,7 @@ public class midiGenetic {
     for(int j = 0; j < size; j++)
     {
       rand = Math.random();
-      if(rand <= (fitness[j]/(maxFitness*1.0))) //higher firness means higher selection chance
+      if(rand <= (fitness[j]/(maxFitness*1.0))) //higher fitness means higher selection chance
       {
         newPop.add(population.get(j));
         population.remove(j);
@@ -171,6 +171,9 @@ public class midiGenetic {
 		 cPoint = Math.random() * p2.size() + 1;
      }
 
+	 int ind = lengthMatch(p1,p2); //check if there is a point when the remaining notes are of equal length
+     if(ind != -1)
+		cPoint = ind; //if so, overwrite cPoint
      
      for(int j = 0; j < temp; j++)
      {
@@ -188,7 +191,7 @@ public class midiGenetic {
 		   if(p1.peekFirst() != null)
 				newP2.add(p1.removeFirst());
        }
-     }
+     } 
      
      newPop.set(i-1, newP1); //insert the new parents
      newPop.set(i, newP2); 
@@ -206,7 +209,7 @@ public class midiGenetic {
  ///CROSSOVER END-------------------------------------------------------------------
  
  ///MUTATION------------------------------------------------------------------------
- public void mutation()
+ public void mutation(double stability)
  {
    LinkedList<NoteObj> melody, newMelody;
    
@@ -244,6 +247,14 @@ public class midiGenetic {
          newMelody.add(melody.get(j));
        }
      }
+     
+     //random mutation
+     for(NoteObj z : newMelody.subList(1,newMelody.size()))
+     {
+		 if(Math.random() > stability)
+		 {z.setNote(Note.Notes[(int)(Math.random()*96)]);}
+	 }
+	 //
      
      newPop.set(i,newMelody);
    }
@@ -339,20 +350,31 @@ public class midiGenetic {
  }
  ///CREATE MELODY END-------------------------------------------------------------------------
  
- public int lengthMatch(LinkedList<NoteObj> a,LinkedList<NoteObj> b)
+ public int lengthMatch(LinkedList<NoteObj> a,LinkedList<NoteObj> b) //compare list lengths and fine a matching remainder
  {
 	 int l1 = a.size();
 	 int l2 = b.size();
 	 
-	 int temp = (l1 < l2) ? l1 : l2;
+	 int temp = (l1 < l2) ? l1 : l2; 	  //length of the shortest
 	 
 	 
-	 for(int i = 0; i < temp; i++)
+	 for(int i = 2; i < temp; i++) 	 	  //for the length of the shortest list
 	 {
+		 int sum1 = 0, sum2 = 0;
+		 for(int j = i; j < l1; j++) 	  //for the remainder of this list
+		 {
+			 sum1 = a.get(j).getLength(); //sum remaining length
+		 }
+		 for(int j = i; j < l2; j++)
+		 {
+			 sum2 = b.get(j).getLength();
+		 }
 		 
+		 if(sum1 == sum2) 		//if the remainders are the same
+		 { return i; } 			//return the index
 	 }
 	 
-	 return 0;
+	 return -1;
  }
  
  
