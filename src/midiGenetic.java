@@ -1,5 +1,3 @@
-
-
 import java.util.LinkedList;
 
 public class midiGenetic {
@@ -42,7 +40,7 @@ public class midiGenetic {
   
   for(int i = 0; i < POPSIZE; i++)
   {
-   population.set(i, createMelody(ticks, Note.c3));
+   population.set(i, createMelody(ticks, Note.eF3));
    fitness[i] = calcFit(population.get(i));
    //System.out.println(calcFit(population.get(i)));
   }
@@ -162,13 +160,13 @@ public class midiGenetic {
      
      if(p1.size() < p2.size())
      {
-		 temp = p2.size();
-		 cPoint = Math.random() * p1.size() + 1;
+       temp = p2.size();
+       cPoint = Math.random() * p1.size() + 1;
      }
      else
      {
-		 temp = p1.size();
-		 cPoint = Math.random() * p2.size() + 1;
+       temp = p1.size();
+       cPoint = Math.random() * p2.size() + 1;
      }
 
      
@@ -176,17 +174,17 @@ public class midiGenetic {
      {
        if(j < (int)cPoint)
        {
-		   if(p1.peekFirst() != null)
-				newP1.add(p1.removeFirst());
-		   if(p2.peekFirst() != null)
-				newP2.add(p2.removeFirst());
+        if(p1.peekFirst() != null)
+          newP1.add(p1.removeFirst());
+        if(p2.peekFirst() != null)
+          newP2.add(p2.removeFirst());
        }
        else //swap insertion after the crossover point
        {
-		   if(p2.peekFirst() != null)
-				newP1.add(p2.removeFirst());
-		   if(p1.peekFirst() != null)
-				newP2.add(p1.removeFirst());
+         if(p2.peekFirst() != null)
+           newP1.add(p2.removeFirst());
+         if(p1.peekFirst() != null)
+           newP2.add(p1.removeFirst());
        }
      }
      
@@ -293,12 +291,12 @@ public class midiGenetic {
  
  public int getLength(LinkedList<NoteObj> x)
  {
-	 int length = 0;
-	 for(NoteObj i : x)
-	 {
-		 length += i.getLength();
-	 }
-	 return length;
+  int length = 0;
+  for(NoteObj i : x)
+  {
+   length += i.getLength();
+  }
+  return length;
  }
  
  ///CREATE MELODY-----------------------------------------------------------------------------
