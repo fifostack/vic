@@ -337,6 +337,23 @@ public class midiGenetic {
  }
  ///CREATE MELODY END-------------------------------------------------------------------------
  
+ public int lengthMatch(LinkedList<NoteObj> a,LinkedList<NoteObj> b)
+ {
+	 int l1 = a.size();
+	 int l2 = b.size();
+	 
+	 int temp = (l1 < l2) ? l1 : l2;
+	 
+	 
+	 for(int i = 0; i < temp; i++)
+	 {
+		 
+	 }
+	 
+	 return 0;
+ }
+ 
+ 
 }
 
 
