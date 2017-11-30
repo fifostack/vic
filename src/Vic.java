@@ -25,7 +25,7 @@ public class Vic
   public static void main(String argv[]) {  
    
  GA = new midiGenetic(100,64); //creates a genetic algorithm of 100 members of 64 ticks each (4 bars in 4/4 time)
- GA.init();        //create initial population
+ GA.init();        			   //create initial population
  //printAll(GA.population);
  LinkedList<NoteObj> startingBest = GA.getBest(); //best of initial generation
  LinkedList<NoteObj> THEBEST;
