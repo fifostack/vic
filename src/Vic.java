@@ -30,9 +30,10 @@ public class Vic
  GA.init();
  //printAll(GA.population);
  LinkedList<NoteObj> startingBest = GA.getBest();
+ printMelody(startingBest);
  GA.runGenetics(10);
  LinkedList<NoteObj> THEBEST = GA.getBest();
- printMelody(startingBest);
+ 
  printMelody(THEBEST);
     
       initTrack(); //create midi file and set initial values
@@ -142,7 +143,7 @@ public class Vic
   */
   public static void endTrack() 
   {
-	  try{
+   try{
    //****  set end of track (meta event) 4 ticks later  ****
       MetaMessage mt = new MetaMessage();
       byte[] bet = {}; // empty array
@@ -187,7 +188,7 @@ public class Vic
   */
   static void printMelody(LinkedList<NoteObj> notes) //display each note in the object array 
   {
-	System.out.print(" Start: ");
+ System.out.print(" Start: ");
     System.out.println("NOTES SIZE: " + notes.size());
     for(int i = 1; i < notes.size(); i++)
     {
