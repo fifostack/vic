@@ -215,11 +215,13 @@ public class midiGenetic {
    
    for(int i = 0; i<newPop.size(); i++)
    {
+	 
      melody = newPop.get(i);
      newMelody = new LinkedList<NoteObj>(); //create a new melody
      newMelody.add(melody.get(0)); //copy key note
      newMelody.add(melody.get(1));
      
+//------Octave Squishing----------------------------
      for(int j = 2; j < melody.size(); j++) //for every note but the first note
      {
        int dis = NoteObj.distance(melody.get(j), newMelody.get(j-1)); //distance between the notes
@@ -248,7 +250,7 @@ public class midiGenetic {
        }
      }
      
-     //random mutation
+//-------Random mutation---------------------------
      for(NoteObj z : newMelody.subList(1,newMelody.size()))
      {
 		 if(Math.random() > stability)

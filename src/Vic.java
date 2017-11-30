@@ -188,8 +188,8 @@ public class Vic
   */
   static void printMelody(LinkedList<NoteObj> notes) //display each note in the object array 
   {
- System.out.print(" Start: ");
-    System.out.println("NOTES SIZE: " + notes.size());
+	System.out.println("NOTES SIZE: " + (notes.size()-1));
+	System.out.print(" Start: ");
     
     for(int i = 0; i < notes.size(); i++)
     {
