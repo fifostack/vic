@@ -95,8 +95,9 @@ public class midiGenetic {
    }
   }
   
-  
-  int tickCount = 0;
+  //FORMULA F1 CALCULATION---------------------------------------------------------------------------------------------
+  int tickCount = no.get(1).getLength(), totalTicks = 0;
+  int overflowCount = 0;
   int intervalF1Fit = 0;
   NoteObj currNote;
   NoteObj prevNote;
@@ -104,11 +105,20 @@ public class midiGenetic {
   //Summation for formula f1 found in the paper
   for(int i = 0; i < bars; i++)//Sum of total interval fitnesses for each bar to get total of the melody
   {
-    while(tickCount < 16)//Summation of interval fitness for each bar
+    tickCount = 0 + overflowCount;//Initialize tickCount to 0 plus the overflow of the previous bar(if any)
+    overflowCount = 0;
+    while(tickCount < 16 && totalTicks < (ticks-1))//Summation of interval fitness for each bar
     {
-      currNote = no.get(noteCount);
-      prevNote = no.get(noteCount-1);
-      
+      try
+      {
+        currNote = no.get(noteCount);//Get current note
+        prevNote = no.get(noteCount-1);//Get previous note
+      }
+      catch(IndexOutOfBoundsException e)
+      {
+        tickCount+= 16;
+        continue;
+      }
       int interval = Math.abs(NoteObj.distance(currNote, prevNote));//Calculate interval
       
       switch(interval)//Give fitness points based on interval type
@@ -137,14 +147,25 @@ public class midiGenetic {
           break;
       }
       
-      
+      tickCount += currNote.getLength();
+      noteCount++;
+      if(tickCount > 16)
+      {
+        overflowCount = tickCount - 16;
+      }
+      tickCount -= overflowCount;
     }
-    noteCount++;
+    if(overflowCount > 0)
+      noteCount++;
+    totalTicks += tickCount;
+    
+    
+    
   }
-  
+  //END F1 FORMULA CALCULATION-----------------------------------------------------------------------------------------
   //System.out.println("Octave Fitness: " + octFit + "Key FItness: " + keyFit);
   
-  totalFit = keyFit + octFit;
+  totalFit = keyFit + octFit + intervalF1Fit;
   return totalFit;
  }
  
@@ -309,7 +330,7 @@ public class midiGenetic {
    
    for(int i = 0; i<newPop.size(); i++)
    {
-	 
+  
      melody = newPop.get(i);
      newMelody = new LinkedList<NoteObj>(); //create a new melody
      newMelody.add(melody.get(0)); //copy key note
