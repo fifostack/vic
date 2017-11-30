@@ -64,7 +64,7 @@ public class Vic
       endTrack();
       writeFile("gen1.mid");
       
-      GA.runGenetics(1000);
+      GA.runGenetics(100);
       THEBEST = GA.getBest();//best after all generations
       
       initTrack();
