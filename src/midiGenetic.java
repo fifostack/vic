@@ -57,7 +57,7 @@ public class midiGenetic {
      System.out.println("Performing crossover...");
      crossover();
      System.out.println("Mutating...");
-     //mutation();
+     mutation();
      newGen();
      getBest();
      System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd]);
@@ -92,6 +92,8 @@ public class midiGenetic {
     octFit++;
    }
   }
+  
+  //System.out.println("Octave Fitness: " + octFit + "Key FItness: " + keyFit);
   
   totalFit = keyFit + octFit;
   return totalFit;
@@ -131,16 +133,12 @@ public class midiGenetic {
     }
     size--;
     
-    for(int k = 0; k < newPop.size(); k++)
-    {
-      fitness[k] = calcFit(newPop.get(k));
-    }
     
   }
-  population = newPop;
-  for(int k = 0; k < population.size(); k++)
+  
+  for(int k = 0; k < newPop.size(); k++)
     {
-      fitness[k] = calcFit(population.get(k));
+      fitness[k] = calcFit(newPop.get(k));
     }
   
  }
@@ -202,7 +200,7 @@ public class midiGenetic {
    {
      melody = newPop.get(i);
      newMelody = new LinkedList<NoteObj>(); //create a new melody
-     newMelody.add(melody.get(0)); //copy ke note
+     newMelody.add(melody.get(0)); //copy key note
      newMelody.add(melody.get(1));
      
      for(int j = 2; j < melody.size(); j++) //for every note but the first note
@@ -214,12 +212,12 @@ public class midiGenetic {
          NoteObj temp = melody.get(j);
          if(dis > 0) //if its too high, pull it down an octave
          {
-           temp = new NoteObj((melody.get(j).getNote()) - 18,melody.get(j).getLength());
+           temp = new NoteObj((melody.get(j).getNote()) - 0x0C,melody.get(j).getLength());
            newMelody.add(temp);
          }
          else if(dis < 0) //if its too low, push it up an octave
          {
-           temp = new NoteObj((melody.get(j).getNote()) + 18,melody.get(j).getLength());
+           temp = new NoteObj((melody.get(j).getNote()) + 0x0C,melody.get(j).getLength());
            newMelody.add(temp);
          }
          else
@@ -267,7 +265,8 @@ public class midiGenetic {
    }
   }
   //System.out.println("Best found at index: " + maxInd + " with fitness: " + max);
-  return population.get(maxInd);
+  LinkedList<NoteObj> best = population.get(maxInd);
+  return best;
  }
  ///GET BEST END--------------------------------------------------------------------
  
@@ -289,15 +288,15 @@ public class midiGenetic {
   else//Either a specific Key is entered or 0 for a random one
     rNote = r;
   
-  NoteObj keyN = new NoteObj(Note.Notes[rNote], 1); //first note determines key, and is not played
+  NoteObj keyN = new NoteObj(rNote, 1); //first note determines key, and is not played
   
   temp.add(keyN);
   
   while(curTotal < ticks) //fill the list with random notes until we reach the desired length
   {
    rNote = (int)(Math.random()*96);
-   //rDur = (int)((Math.random()*15)+1);
-   rDur = 4;   //set the length of the note in ticks (16 - whole note)
+   rDur = (int)((Math.random()*15)+1);
+   //rDur = 4;   //set the length of the note in ticks (16 - whole note)
       
    NoteObj n = new NoteObj(Note.Notes[rNote], rDur); //make a note from generated values
    temp.add(n);                                    //add it to the melody
