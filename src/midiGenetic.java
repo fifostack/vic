@@ -14,11 +14,13 @@ public class midiGenetic {
  int gens; //number of generations
  int ticks; //length of each individual in ticks
  int octave = 12; //size of an octave
+ int bars;
  
  public midiGenetic() //default constructor
  {
   population = new LinkedList<LinkedList<NoteObj>>();
   ticks = 65;
+  bars = (ticks-1)/16;
   POPSIZE = 100;
   fitness = new int[POPSIZE];
  }
@@ -27,6 +29,7 @@ public class midiGenetic {
  {
   population = new LinkedList<LinkedList<NoteObj>>();
   ticks = t;
+  bars = (ticks-1)/16;
   POPSIZE = n;
   fitness = new int[POPSIZE];
  }
@@ -91,6 +94,53 @@ public class midiGenetic {
    }
   }
   
+  
+  int tickCount = 0;
+  int intervalF1Fit = 0;
+  NoteObj currNote;
+  NoteObj prevNote;
+  int noteCount = 2;
+  //Summation for formula f1 found in the paper
+  for(int i = 0; i < bars; i++)//Sum of total interval fitnesses for each bar to get total of the melody
+  {
+    while(tickCount < 16)//Summation of interval fitness for each bar
+    {
+      currNote = no.get(noteCount);
+      prevNote = no.get(noteCount-1);
+      
+      int interval = Math.abs(NoteObj.distance(currNote, prevNote));//Calculate interval
+      
+      switch(interval)//Give fitness points based on interval type
+      {
+        //Perfect Consonant Category
+        case 0: //Unison
+        case 5: //Perfect Fourth
+        case 7: //Perfect Fifth
+        case 12: //Octave
+          intervalF1Fit += 5;
+          break;
+        //Imperfect Consonant Category
+        case 4: //Major/Minor third
+        case 9: //Major/Minor sixth
+          intervalF1Fit += 4;
+          break;
+        //Seconds
+        case 2: //Major/Minor Second
+          intervalF1Fit += 3;
+          break;
+        //Sevenths
+        case 11:
+          intervalF1Fit += 3;
+          break;
+        default:
+          break;
+      }
+      
+      
+    }
+    noteCount++;
+  }
+  
   //System.out.println("Octave Fitness: " + octFit + "Key FItness: " + keyFit);
   
   totalFit = keyFit + octFit;
@@ -115,7 +165,7 @@ public class midiGenetic {
     for(int j = 0; j < size; j++)
     {
       rand = Math.random();
-      if(rand <= (fitness[j]/(maxFitness*1.0))) //higher firness means higher selection chance
+      if(rand <= (fitness[j]/(maxFitness*1.0))) //higher fitness means higher selection chance
       {
         newPop.add(population.get(j));
         population.remove(j);
@@ -339,18 +389,18 @@ public class midiGenetic {
  
  public int lengthMatch(LinkedList<NoteObj> a,LinkedList<NoteObj> b)
  {
-	 int l1 = a.size();
-	 int l2 = b.size();
-	 
-	 int temp = (l1 < l2) ? l1 : l2;
-	 
-	 
-	 for(int i = 0; i < temp; i++)
-	 {
-		 
-	 }
-	 
-	 return 0;
+  int l1 = a.size();
+  int l2 = b.size();
+  
+  int temp = (l1 < l2) ? l1 : l2;
+  
+  
+  for(int i = 0; i < temp; i++)
+  {
+   
+  }
+  
+  return 0;
  }
  
  
