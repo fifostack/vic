@@ -57,7 +57,7 @@ public class midiGenetic {
      System.out.println("Selecting...");
      selection();
      System.out.println("Performing crossover...");
-     //crossover();
+     crossover();
      System.out.println("Mutating...");
      mutation(.95);
      newGen();
@@ -191,9 +191,9 @@ public class midiGenetic {
     }
     variance /= barNoteCount;
     
-    int F1Influence = 1;
+    int F1Influence = 10;
     int F1Mean = 5;
-    int F2Influence = 1;
+    int F2Influence = 10;
     int F2Variance = 5;
     
     F1Fit += F1Influence*(F1Mean - a);
@@ -424,44 +424,44 @@ public class midiGenetic {
 //
      for(NoteObj z : newMelody.subList(1,newMelody.size()))
      {
-		if(Math.random() > stability)
-		{z.setNote(Note.Notes[(int)(Math.random()*96)]);}//randomize a note
-		
-	 }
+  if(Math.random() > stability)
+  {z.setNote(Note.Notes[(int)(Math.random()*96)]);}//randomize a note
+  
+  }
 //
 
 //----------------------Random Transpose------------------------------//
 //
 
-	if(Math.random() > 0.98)
-	{
-		boolean pos =(Math.random() > 0.5) ? true : false; // transpose up or down?
-		
-		for(NoteObj y : newMelody.subList(1,newMelody.size()))//for each real note
-		{
-			int n = y.getNote();
-			int index = -1;
-			int[] keynotes = Note.getKey(newMelody.get(0).getNote());
-			for(int k = 0; k < keynotes.length; k++)
-			{
-				if(y.getNote() == keynotes[k])
-				{
-					index = k;
-				}
-			}
-			
-			if(pos && index != (keynotes.length-1)) //transpose up
-				if(index != -1)
-					y.setNote(keynotes[index+1]);
-				else
-					y.setNote(y.getNote() + 0x01);
-			else if(!pos && index != 0)    //transpose down
-				if(index != -1)
-					y.setNote(keynotes[index-1]);
-				else
-					y.setNote(y.getNote() - 0x01);
-		}
-	}
+ if(Math.random() > 0.98)
+ {
+  boolean pos =(Math.random() > 0.5) ? true : false; // transpose up or down?
+  
+  for(NoteObj y : newMelody.subList(1,newMelody.size()))//for each real note
+  {
+   int n = y.getNote();
+   int index = -1;
+   int[] keynotes = Note.getKey(newMelody.get(0).getNote());
+   for(int k = 0; k < keynotes.length; k++)
+   {
+    if(y.getNote() == keynotes[k])
+    {
+     index = k;
+    }
+   }
+   
+   if(pos && index != (keynotes.length-1)) //transpose up
+    if(index != -1)
+     y.setNote(keynotes[index+1]);
+    else
+     y.setNote(y.getNote() + 0x01);
+   else if(!pos && index != 0)    //transpose down
+    if(index != -1)
+     y.setNote(keynotes[index-1]);
+    else
+     y.setNote(y.getNote() - 0x01);
+  }
+ }
 
 //
      
