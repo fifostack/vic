@@ -29,7 +29,7 @@ public class midiGenetic {
  public midiGenetic(int n, int t)
  {
   population = new LinkedList<LinkedList<NoteObj>>();
-  ticks = t;
+  ticks = t+1;
   bars = (ticks-1)/16;
   POPSIZE = n;
   fitness = new int[POPSIZE];
@@ -265,49 +265,57 @@ public class midiGenetic {
 //------------------normalize new melody lengths-------------------------//
 
 //-------------handle melodies becoming too short-----------------//
-
+	 //System.out.println("C1\n");
 	 while(getLength(newP1) < ticks)
 	 {
-		 double x = Math.random()*newP2.size();
+		 double x = (Math.random()*(newP2.size()-1))+1;
 		 NoteObj n = newP2.get((int)x);
 		 newP1.addLast(n);
+		 
 	 }
+	 //System.out.println("C2\n");
 	 while(getLength(newP2) < ticks)
 	 {
-		 double x = Math.random()*newP1.size();
+		 double x = (Math.random()*(newP1.size()-1))+1;
 		 NoteObj n = newP1.get((int)x);
 		 newP2.addLast(n);
+
 	 }
 
 //-------------if they are too big--------------------------------//
+
+//System.out.println("C3\n");
      while(getLength(newP1) > ticks)
      {
-		 //List<NoteObj> x = newP1.subList(0,newP1.size()-1);
-		 if(getLength(newP1) - newP1.peekLast().getLength() > ticks)
+		 if(getLength(newP1) - newP1.peekLast().getLength() >= ticks)
 		 {
 			 newP1.removeLast();
 		 }
 		 else if(getLength(newP1) - newP1.peekLast().getLength() < ticks)
 		 {
 			 int x = getLength(newP1) - newP1.peekLast().getLength();
-			 NoteObj note = newP1.removeLast();
-			 newP1.addLast(new NoteObj(note.getNote(),note.getLength()-x));
+			 NoteObj b = newP1.get(newP1.size()-1);
+			 newP1.get(newP1.size()-1).setLength(b.getLength() - (getLength(newP1) - ticks));
 		 }
+		
 	 }
-	 while(getLength(newP2) > 64)
+	 //System.out.println("C4\n");
+	 while(getLength(newP2) > ticks)
 	 {
-		 if(getLength(newP2) - newP2.peekLast().getLength() > ticks)
+		 if((getLength(newP2) - newP2.peekLast().getLength()) >= ticks)
 		 {
 			 newP2.removeLast();
 		 }
 		 else if(getLength(newP2) - newP2.peekLast().getLength() < ticks)
 		 {
 			 int x = getLength(newP2) - newP2.peekLast().getLength();
-			 NoteObj note = newP2.removeLast();
-			 newP2.addLast(new NoteObj(note.getNote(),note.getLength()-x));
+			 NoteObj b = newP2.get(newP2.size()-1);
+			 newP2.get(newP2.size()-1).setLength(b.getLength() - (getLength(newP2) - ticks));
 		 }
+		 
 	 }
-     
+	 
+     //System.out.println("C5\n");
      newPop.set(i-1, newP1); //insert the new parents
      newPop.set(i, newP2); 
      
@@ -368,15 +376,15 @@ public class midiGenetic {
 //-------Random mutation---------------------------
      for(NoteObj z : newMelody.subList(1,newMelody.size()))
      {
-   if(Math.random() > stability)
-   {z.setNote(Note.Notes[(int)(Math.random()*96)]);}
-  }
+		 if(Math.random() > stability)
+			{z.setNote(Note.Notes[(int)(Math.random()*96)]);}
+	 }
   //
      
      newPop.set(i,newMelody);
-   }
+    }
    
-   for(int k = 0; k < newPop.size(); k++)
+    for(int k = 0; k < newPop.size(); k++)
     {
       fitness[k] = calcFit(newPop.get(k));
     }
