@@ -16,6 +16,7 @@ public class midiGenetic {
  int ticks; //length of each individual in ticks
  int octave = 12; //size of an octave
  int bars;
+ int[] KEY;
  
  public midiGenetic() //default constructor
  {
@@ -59,7 +60,7 @@ public class midiGenetic {
      System.out.println("Performing crossover...");
      crossover();
      System.out.println("Mutating...");
-     mutation(.95);
+     mutation(.9999999999999990);
      newGen();
      getBest();
      System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd] + " and length: " + getLength(getBest()));
@@ -77,7 +78,7 @@ public class midiGenetic {
   int refNote = no.get(1).getNote();//second note is used as a reference note
   int keyNote = no.get(0).getNote();//first note sets the key
   
-  int[] KEY = Note.getKey(keyNote); //get the lists of notes in this individual's key
+  KEY = Note.getKey(keyNote); //get the lists of notes in this individual's key
   
   
   
@@ -191,9 +192,9 @@ public class midiGenetic {
     }
     variance /= barNoteCount;
     
-    int F1Influence = 10;
+    int F1Influence = 25;
     int F1Mean = 5;
-    int F2Influence = 10;
+    int F2Influence = 30;
     int F2Variance = 5;
     
     F1Fit += F1Influence*(F1Mean - a);
@@ -314,6 +315,8 @@ public class midiGenetic {
   //System.out.println("C1\n");
   while(getLength(newP1) < ticks)
   {
+   double y = (Math.random()*6)+1.0;
+   newP1.get(newP1.size()-1).setLength(newP1.get(newP1.size()-1).getLength() + (int)y);
    double x = (Math.random()*(newP2.size()-1))+1;
    NoteObj n = newP2.get((int)x);
    newP1.addLast(n);
@@ -322,6 +325,8 @@ public class midiGenetic {
   //System.out.println("C2\n");
   while(getLength(newP2) < ticks)
   {
+   double y = (Math.random()*6)+1.0;
+   newP2.get(newP2.size()-1).setLength((int)y);
    double x = (Math.random()*(newP1.size()-1))+1;
    NoteObj n = newP1.get((int)x);
    newP2.addLast(n);
@@ -401,12 +406,12 @@ public class midiGenetic {
          NoteObj temp = melody.get(j);
          if(dis > 0) //if its too high, pull it down an octave
          {
-           temp = new NoteObj((melody.get(j).getNote()) - 0x0C,melody.get(j).getLength());
+           temp = new NoteObj((melody.get(j).getNote()) - 12,melody.get(j).getLength());
            newMelody.add(temp);
          }
          else if(dis < 0) //if its too low, push it up an octave
          {
-           temp = new NoteObj((melody.get(j).getNote()) + 0x0C,melody.get(j).getLength());
+           temp = new NoteObj((melody.get(j).getNote()) + 12,melody.get(j).getLength());
            newMelody.add(temp);
          }
          else
@@ -419,23 +424,32 @@ public class midiGenetic {
          newMelody.add(melody.get(j));
        }
      }
-     
+//     
 //----------------------Random mutation-------------------------------//
 //
+     int noteDist = 0;
      for(NoteObj z : newMelody.subList(1,newMelody.size()))
      {
-  if(Math.random() > stability)
-  {z.setNote(Note.Notes[(int)(Math.random()*96)]);}//randomize a note
-  
-  }
+       NoteObj y = newMelody.get(newMelody.indexOf(z) - 1);
+       if(Math.random() > stability)
+       {
+         int randomNote = Note.Notes[(int)(Math.random()*96)];
+         noteDist = NoteObj.distance(z,y);
+         if(!(noteDist > 12 || noteDist < -12))
+           z.setNote(randomNote);
+       }//randomize a note
+       
+       //System.out.println("MUTATED NOTE: " + z.getNote());
+     }
+     
 //
 
 //----------------------Random Transpose------------------------------//
 //
 
- if(Math.random() > 0.98)
+ if(Math.random() > 0.50)
  {
-  boolean pos =(Math.random() > 0.5) ? true : false; // transpose up or down?
+  boolean pos =(Math.random() > 0.53) ? true : false; // transpose up or down?
   
   for(NoteObj y : newMelody.subList(1,newMelody.size()))//for each real note
   {
@@ -462,7 +476,21 @@ public class midiGenetic {
      y.setNote(y.getNote() - 0x01);
   }
  }
-
+ /*/
+ //----------------------Random Retrograde------------------------------//
+ if(Math.random() > .5)
+ {
+  NoteObj temp;
+  LinkedList<NoteObj> tempList = new LinkedList<NoteObj>();
+   tempList.add(newMelody.get(0));
+  for(int k = newMelody.size(); k >= 1; k--)
+  {
+    temp = newMelody.removeLast();
+    tempList.add(temp);
+  }
+  newMelody = tempList;
+ }
+*/
 //
      
      newPop.set(i,newMelody);//add the new melody to the new population
