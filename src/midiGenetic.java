@@ -60,7 +60,7 @@ public class midiGenetic {
      System.out.println("Performing crossover...");
      crossover();
      System.out.println("Mutating...");
-     mutation(.9999999999999990);
+     mutation(.97);
      newGen();
      getBest();
      System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd] + " and length: " + getLength(getBest()));
@@ -428,15 +428,15 @@ public class midiGenetic {
 //----------------------Random mutation-------------------------------//
 //
      int noteDist = 0;
-     for(NoteObj z : newMelody.subList(1,newMelody.size()))
+     for(int z = 1; z < newMelody.size(); z++)
      {
-       NoteObj y = newMelody.get(newMelody.indexOf(z) - 1);
+       //NoteObj y = newMelody.get(newMelody.indexOf(z) - 1);
        if(Math.random() > stability)
        {
          int randomNote = Note.Notes[(int)(Math.random()*96)];
-         noteDist = NoteObj.distance(z,y);
-         if(!(noteDist > 12 || noteDist < -12))
-           z.setNote(randomNote);
+         //noteDist = NoteObj.distance(newMelody.get(z),y);
+         //if(!(noteDist > 12 || noteDist < -12))
+         newMelody.set(z,new NoteObj(randomNote,newMelody.get(z).getLength()));
        }//randomize a note
        
        //System.out.println("MUTATED NOTE: " + z.getNote());
@@ -446,8 +446,8 @@ public class midiGenetic {
 
 //----------------------Random Transpose------------------------------//
 //
-
- if(Math.random() > 0.50)
+/*
+ if(Math.random() > 0.70)
  {
   boolean pos =(Math.random() > 0.53) ? true : false; // transpose up or down?
   
@@ -465,18 +465,22 @@ public class midiGenetic {
    }
    
    if(pos && index != (keynotes.length-1)) //transpose up
+   {
     if(index != -1)
      y.setNote(keynotes[index+1]);
     else
      y.setNote(y.getNote() + 0x01);
+   }
    else if(!pos && index != 0)    //transpose down
+   {
     if(index != -1)
      y.setNote(keynotes[index-1]);
     else
      y.setNote(y.getNote() - 0x01);
+   }
   }
  }
- /*/
+ 
  //----------------------Random Retrograde------------------------------//
  if(Math.random() > .5)
  {

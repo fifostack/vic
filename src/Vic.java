@@ -10,7 +10,7 @@
  */
 
 import java.io.*;
-import java.util.*;4
+import java.util.*;
 import javax.sound.midi.*; // package for all midi classes
 
 
@@ -67,7 +67,7 @@ public class Vic
       
 
       GA.runGenetics(150);
-      printAll(GA.population);
+      //printAll(GA.population);
       THEBEST = GA.getBest();//best after all generations
       
       initTrack();
@@ -77,6 +77,7 @@ public class Vic
       endTrack();
       writeFile("best.mid");
 
+        System.exit(0);
   } //main
   
  /*------------------------ Init ----------------------------------
