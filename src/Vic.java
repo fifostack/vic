@@ -65,7 +65,7 @@ public class Vic
       endTrack();
       writeFile("gen1.mid");
       
-      GA.runGenetics(1000);
+      GA.runGenetics(100);
       THEBEST = GA.getBest();//best after all generations
       
       initTrack();
@@ -193,7 +193,7 @@ public class Vic
  System.out.println("NOTES SIZE: " + (notes.size()-1));
  System.out.print(" Start: ");
     
-    for(int i = 0; i < notes.size(); i++)
+    for(int i = 1; i < notes.size(); i++)
     {
       System.out.print(notes.get(i).toString());
     }
