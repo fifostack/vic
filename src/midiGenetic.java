@@ -88,7 +88,7 @@ public class midiGenetic {
     count++;
   }
   
-  keyFit = (int)((keyFit/count)*100);
+  keyFit = (int)((keyFit/(double)count)*100.0);
   ///*---- Give fitness points based on notes within one octave of reference note *///
   for(int i = 2; i < no.size(); i++)
   {
@@ -98,7 +98,7 @@ public class midiGenetic {
     octFit++;
    }
   }
-  octFit = (int)((octFit/count)*100);
+  octFit = (int)((octFit/(double)count)*100.0);
   
   //FORMULA F1 CALCULATION---------------------------------------------------------------------------------------------
   int tickCount = no.get(1).getLength(), totalTicks = 0;
@@ -166,10 +166,10 @@ public class midiGenetic {
     
     
     
+    
   }
   //END F1 FORMULA CALCULATION-----------------------------------------------------------------------------------------
   //System.out.println("Octave Fitness: " + octFit + "Key FItness: " + keyFit);
-  
   totalFit = keyFit + octFit + intervalF1Fit;
   return totalFit;
  }
