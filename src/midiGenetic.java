@@ -60,7 +60,7 @@ public class midiGenetic {
      System.out.println("Performing crossover...");
      crossover();
      System.out.println("Mutating...");
-     mutation(.97);
+     mutation(.988);
      newGen();
      getBest();
      System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd] + " and length: " + getLength(getBest()));
@@ -192,9 +192,9 @@ public class midiGenetic {
     }
     variance /= barNoteCount;
     
-    int F1Influence = 25;
+    int F1Influence = 30;
     int F1Mean = 5;
-    int F2Influence = 30;
+    int F2Influence = 25;
     int F2Variance = 5;
     
     F1Fit += F1Influence*(F1Mean - a);
