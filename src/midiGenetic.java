@@ -349,7 +349,8 @@ public class midiGenetic {
      newMelody.add(melody.get(0)); //copy key note
      newMelody.add(melody.get(1));
      
-//------Octave Squishing----------------------------
+//------------------------Octave Squishing----------------------------//
+//
      for(int j = 2; j < melody.size(); j++) //for every note but the first note
      {
        int dis = NoteObj.distance(melody.get(j), newMelody.get(j-1)); //distance between the notes
@@ -378,18 +379,55 @@ public class midiGenetic {
        }
      }
      
-//-------Random mutation---------------------------
+//----------------------Random mutation-------------------------------//
+//
      for(NoteObj z : newMelody.subList(1,newMelody.size()))
      {
-   if(Math.random() > stability)
-   {z.setNote(Note.Notes[(int)(Math.random()*96)]);}
-  }
-  //
+		if(Math.random() > stability)
+		{z.setNote(Note.Notes[(int)(Math.random()*96)]);}//randomize a note
+		
+	 }
+//
+
+//----------------------Random Transpose------------------------------//
+//
+
+	if(Math.random() > 0.98)
+	{
+		boolean pos =(Math.random() > 0.5) ? true : false; // transpose up or down?
+		
+		for(NoteObj y : newMelody.subList(1,newMelody.size()))//for each real note
+		{
+			int n = y.getNote();
+			int index = -1;
+			int[] keynotes = Note.getKey(newMelody.get(0).getNote());
+			for(int k = 0; k < keynotes.length; k++)
+			{
+				if(y.getNote() == keynotes[k])
+				{
+					index = k;
+				}
+			}
+			
+			if(pos && index != (keynotes.length-1)) //transpose up
+				if(index != -1)
+					y.setNote(keynotes[index+1]);
+				else
+					y.setNote(y.getNote() + 0x01);
+			else if(!pos && index != 0)    //transpose down
+				if(index != -1)
+					y.setNote(keynotes[index-1]);
+				else
+					y.setNote(y.getNote() - 0x01);
+		}
+	}
+
+//
      
-     newPop.set(i,newMelody);
+     newPop.set(i,newMelody);//add the new melody to the new population
     }
    
-    for(int k = 0; k < newPop.size(); k++)
+    for(int k = 0; k < newPop.size(); k++)//recalculate fitness
     {
       fitness[k] = calcFit(newPop.get(k));
     }
