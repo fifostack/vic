@@ -52,7 +52,7 @@ public class Vic
       playNote(Note.d5, 2);// D 5
       playNote(Note.c5, 4);// C 5
       
-      rest(4); //4th note rest
+      rest(4); //Quarter note rest
       endTrack();
       writeFile("scale.mid"); //writes the midi file
       
@@ -61,15 +61,17 @@ public class Vic
       initTrack();
       printMelody(startingBest);
       playMelody(startingBest);
+      rest(64); //Quarter note rest
       endTrack();
       writeFile("gen1.mid");
       
-      GA.runGenetics(100);
+      GA.runGenetics(1000);
       THEBEST = GA.getBest();//best after all generations
       
       initTrack();
       printMelody(THEBEST);
-      playMelody(THEBEST); //play individual with highest fitness
+      playMelody(THEBEST);
+      rest(64); //Quarter note rest//play individual with highest fitness
       endTrack();
       writeFile("best.mid");
 

@@ -57,13 +57,15 @@ public class midiGenetic {
      System.out.println("Selecting...");
      selection();
      System.out.println("Performing crossover...");
-     crossover();
+     //crossover();
      System.out.println("Mutating...");
      mutation(.95);
      newGen();
      getBest();
      System.out.println("Best found at index: " + maxInd + " with fitness: " + fitness[maxInd] + " and length: " + getLength(getBest()));
    }
+   
+   getBest().get(getBest().size()-1).setLength(16);  
  }
  
  public int calcFit(LinkedList<NoteObj> no) //calculates the fitness of an individual
@@ -76,6 +78,8 @@ public class midiGenetic {
   int keyNote = no.get(0).getNote();//first note sets the key
   
   int[] KEY = Note.getKey(keyNote); //get the lists of notes in this individual's key
+  
+  
   
   ///*---- Give fitness points based on notes in key *///
   for(NoteObj i : no) //for each note
@@ -100,18 +104,26 @@ public class midiGenetic {
   }
   octFit = (int)((octFit/(double)count)*100.0);
   
-  //FORMULA F1 CALCULATION---------------------------------------------------------------------------------------------
+  //FORMULA F1 & F2 CALCULATION---------------------------------------------------------------------------------------------
   int tickCount = no.get(1).getLength(), totalTicks = 0;
+  LinkedList<Integer> indinterFits = new LinkedList<Integer>(); 
   int overflowCount = 0;
-  int intervalF1Fit = 0;
+  int F1Fit = 0, F2Fit = 0;
+  int FFit = 0;
+  int a = 0;
+  int barFit = 0;
   NoteObj currNote;
   NoteObj prevNote;
   int noteCount = 2;
+  int barNoteCount = 0;
+  int variance = 0;
   //Summation for formula f1 found in the paper
   for(int i = 0; i < bars; i++)//Sum of total interval fitnesses for each bar to get total of the melody
   {
     tickCount = 0 + overflowCount;//Initialize tickCount to 0 plus the overflow of the previous bar(if any)
     overflowCount = 0;
+    barFit = 0;
+    barNoteCount = 0;
     while(tickCount < 16 && totalTicks < (ticks-1))//Summation of interval fitness for each bar
     {
       try
@@ -133,44 +145,73 @@ public class midiGenetic {
         case 5: //Perfect Fourth
         case 7: //Perfect Fifth
         case 12: //Octave
-          intervalF1Fit += 5;
+          barFit += 5;
+          indinterFits.add(5);
           break;
         //Imperfect Consonant Category
         case 4: //Major/Minor third
         case 9: //Major/Minor sixth
-          intervalF1Fit += 4;
+          barFit += 4;
+          indinterFits.add(4);
           break;
         //Seconds
         case 2: //Major/Minor Second
-          intervalF1Fit += 3;
+          barFit += 3;
+          indinterFits.add(3);
           break;
         //Sevenths
         case 11:
-          intervalF1Fit += 3;
+          barFit += 3;
+          indinterFits.add(3);
           break;
         default:
+          indinterFits.add(0);
           break;
       }
       
       tickCount += currNote.getLength();
       noteCount++;
+      barNoteCount++;
       if(tickCount > 16)
       {
         overflowCount = tickCount - 16;
       }
       tickCount -= overflowCount;
     }
+    if(barNoteCount == 0)
+      barNoteCount++;
     if(overflowCount > 0)
       noteCount++;
     totalTicks += tickCount;
+    a = (barFit/barNoteCount);
+    for(int j = 0; j < barNoteCount-1; j++)
+    {
+      if(!(((barNoteCount-1)-i) < 0))
+          variance += Math.pow(indinterFits.get((barNoteCount-1)-i) - a, 2);
+    }
+    variance /= barNoteCount;
     
+    int F1Influence = 1;
+    int F1Mean = 5;
+    int F2Influence = 1;
+    int F2Variance = 5;
     
+    F1Fit += F1Influence*(F1Mean - a);
+    F2Fit += F2Influence*(F2Variance - variance);
     
+    //intervalF1Fit+= ;
     
   }
-  //END F1 FORMULA CALCULATION-----------------------------------------------------------------------------------------
-  //System.out.println("Octave Fitness: " + octFit + "Key FItness: " + keyFit);
-  totalFit = keyFit + octFit + intervalF1Fit;
+  
+  //Weighted factors for the two halves of function F. These are set to one here but can be played with.
+  int alpha = 1;
+  int beta = 1;
+  
+  FFit = (alpha*F1Fit) + (beta*F2Fit);//Calculating the full function F.
+  
+  //int a = intervalF1Fit;
+  //END F1 & F2 FORMULA CALCULATION-----------------------------------------------------------------------------------------
+  totalFit = keyFit + octFit + FFit;
   return totalFit;
  }
  
